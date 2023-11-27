@@ -4,9 +4,11 @@ import { Outlet } from "react-router";
 
 export default function Layout() {
   return (
-    <div>
+    <div className="flex flex-row">
       <Sidebar></Sidebar>
-      <Outlet />
+      <div className="flex-1 bg-[#f3f4f6]">
+        <Outlet />
+      </div>
     </div>
   );
 }

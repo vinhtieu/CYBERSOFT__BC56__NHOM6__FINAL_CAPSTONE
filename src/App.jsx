@@ -1,7 +1,5 @@
 import React from "react";
 import "./App.css";
-import { increment, decrement } from "./lib/redux/slices/counterSlice";
-import { useDispatch, useSelector } from "react-redux";
 import { QuanLyNguoiDung, QuanLyKhoaHoc } from "./app/admin/pages";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Layout from "./app/admin/layout";
