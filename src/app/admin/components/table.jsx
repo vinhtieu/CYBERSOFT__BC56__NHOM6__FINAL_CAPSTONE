@@ -46,7 +46,7 @@ export default function Table({ header, body }) {
           </td>
           <td className="p-3 space-x-8 text-left">
             <button className="ml-auto relative  bg-light-dark hover:text-primary inline-block h-[25px] w-[25px] text-base font-medium leading-normal text-center align-middle cursor-pointer rounded-2xl transition-colors duration-200 ease-in-out shadow-none border-0 justify-center">
-              <figure className="flex items-center justify-center w-6 h-6 p-0 m-0 leading-none shrink-0">
+              <figure className="flex items-center justify-center w-full h-full p-0 m-0 leading-none shrink-0">
                 <img
                   className="object-contain w-full h-full"
                   src="/assets/red-trash-can-icon.svg"
@@ -55,7 +55,7 @@ export default function Table({ header, body }) {
               </figure>
             </button>
             <button className="ml-auto relative  bg-light-dark hover:text-primary inline-block h-[25px] w-[25px] text-base font-medium leading-normal text-center align-middle cursor-pointer rounded-2xl transition-colors duration-200 ease-in-out shadow-none border-0 justify-center">
-              <figure className="flex items-center justify-center w-6 h-6 p-0 m-0 leading-none shrink-0">
+              <figure className="flex items-center justify-center w-full h-full p-0 m-0 leading-none shrink-0">
                 <img
                   className="object-contain w-full h-full"
                   src="/assets/pencil.svg"
