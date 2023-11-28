@@ -1,16 +1,33 @@
 import React from "react";
+import {
+  openUserDeleteModal,
+  setDeleteUser,
+} from "../../../lib/redux/slices/userDeleteModalSlice";
+import {
+  openUserEditModal,
+  setEditUser,
+} from "../../../lib/redux/slices/userEditModalSlice";
+import { useDispatch } from "react-redux";
+import { TrashIcon, PencilSquareIcon } from "@heroicons/react/24/solid";
 
 export default function Table({ header, body }) {
+  const dispatch = useDispatch();
   const renderTableHeader = (data) => {
-    return data.map((title) => {
-      return <th className="pb-3 text-left min-w-[175px] text-lg">{title}</th>;
+    return data.map((title, index) => {
+      return (
+        <th key={index} className="pb-3 text-left min-w-[175px] text-lg">
+          {title}
+        </th>
+      );
     });
   };
 
   const renderTableBody = (data) => {
-    return data.map((user) => {
+    return data.map((user, index) => {
       return (
-        <tr className="transition-all border-b border-dashed last:border-b-0 group">
+        <tr
+          key={index}
+          className="transition-all border-b border-dashed last:border-b-0 group">
           <td className="p-3 pl-0">
             <div className="flex items-center">
               <div className="relative inline-block shrink-0 rounded-2xl me-3">
@@ -45,22 +62,24 @@ export default function Table({ header, body }) {
             </span>
           </td>
           <td className="p-3 space-x-8 text-left">
-            <button className="ml-auto relative  bg-light-dark hover:text-primary inline-block h-[25px] w-[25px] text-base font-medium leading-normal text-center align-middle cursor-pointer rounded-2xl transition-colors duration-200 ease-in-out shadow-none border-0 justify-center">
+            <button
+              onClick={() => {
+                dispatch(openUserDeleteModal());
+                dispatch(setDeleteUser(user));
+              }}
+              className="ml-auto relative  bg-light-dark hover:text-primary inline-block h-[25px] w-[25px] text-base font-medium leading-normal text-center align-middle cursor-pointer rounded-2xl transition-colors duration-200 ease-in-out shadow-none border-0 justify-center">
               <figure className="flex items-center justify-center w-full h-full p-0 m-0 leading-none shrink-0">
-                <img
-                  className="object-contain w-full h-full"
-                  src="/assets/red-trash-can-icon.svg"
-                  alt=""
-                />
+                <TrashIcon className="text-red-500" />
               </figure>
             </button>
-            <button className="ml-auto relative  bg-light-dark hover:text-primary inline-block h-[25px] w-[25px] text-base font-medium leading-normal text-center align-middle cursor-pointer rounded-2xl transition-colors duration-200 ease-in-out shadow-none border-0 justify-center">
+            <button
+              onClick={() => {
+                dispatch(openUserEditModal());
+                dispatch(setEditUser(user));
+              }}
+              className="ml-auto relative  bg-light-dark hover:text-primary inline-block h-[25px] w-[25px] text-base font-medium leading-normal text-center align-middle cursor-pointer rounded-2xl transition-colors duration-200 ease-in-out shadow-none border-0 justify-center">
               <figure className="flex items-center justify-center w-full h-full p-0 m-0 leading-none shrink-0">
-                <img
-                  className="object-contain w-full h-full"
-                  src="/assets/pencil.svg"
-                  alt=""
-                />
+                <PencilSquareIcon className="text-blue-500" />
               </figure>
             </button>
           </td>

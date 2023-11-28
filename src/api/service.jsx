@@ -4,13 +4,13 @@ export const userService = {
   getUsers: () => {
     return HTTPS.get("/api/QuanLyNguoiDung/LayDanhSachNguoiDung?MaNhom=GP01");
   },
-  addUsers: (value) => {
+  addUser: (value) => {
     return HTTPS.post("/api/QuanLyNguoiDung/ThemNguoiDung", value);
   },
-  updateUsers: (value) => {
+  updateUser: (value) => {
     return HTTPS.put("/api/QuanLyNguoiDung/CapNhatThongTinNguoiDung", value);
   },
-  deleteUsers: (account) => {
+  deleteUser: (account) => {
     return HTTPS.delete("/api/QuanLyNguoiDung/XoaNguoiDung", account);
   },
 };
