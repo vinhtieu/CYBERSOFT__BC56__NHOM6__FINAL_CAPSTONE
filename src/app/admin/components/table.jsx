@@ -7,8 +7,11 @@ import {
   openUserEditModal,
   setEditUser,
 } from "../../../lib/redux/slices/userEditModalSlice";
+import { openUserAddModal } from "../../../lib/redux/slices/userAddModalSlice";
 import { useDispatch } from "react-redux";
 import { TrashIcon, PencilSquareIcon } from "@heroicons/react/24/solid";
+// import {Button} from "antd";
+import Button from "./button";
 
 export default function Table({ header, body }) {
   const dispatch = useDispatch();
@@ -61,27 +64,23 @@ export default function Table({ header, body }) {
               {user.soDt}
             </span>
           </td>
-          <td className="p-3 space-x-8 text-left">
-            <button
-              onClick={() => {
+          <td className="p-3 space-x-6 text-left">
+            <Button
+              onClickEvent={() => {
                 dispatch(openUserDeleteModal());
                 dispatch(setDeleteUser(user));
               }}
-              className="ml-auto relative  bg-light-dark hover:text-primary inline-block h-[25px] w-[25px] text-base font-medium leading-normal text-center align-middle cursor-pointer rounded-2xl transition-colors duration-200 ease-in-out shadow-none border-0 justify-center">
-              <figure className="flex items-center justify-center w-full h-full p-0 m-0 leading-none shrink-0">
-                <TrashIcon className="text-red-500" />
-              </figure>
-            </button>
-            <button
-              onClick={() => {
+              className="!h-[40px] !w-[40px] !p-1.5 !mt-0 !border-0">
+              <TrashIcon className="text-red-500" />
+            </Button>
+            <Button
+              onClickEvent={() => {
                 dispatch(openUserEditModal());
                 dispatch(setEditUser(user));
               }}
-              className="ml-auto relative  bg-light-dark hover:text-primary inline-block h-[25px] w-[25px] text-base font-medium leading-normal text-center align-middle cursor-pointer rounded-2xl transition-colors duration-200 ease-in-out shadow-none border-0 justify-center">
-              <figure className="flex items-center justify-center w-full h-full p-0 m-0 leading-none shrink-0">
-                <PencilSquareIcon className="text-blue-500" />
-              </figure>
-            </button>
+              className="!h-[40px] !w-[40px] !p-1.5 !mt-0 !border-0">
+              <PencilSquareIcon className="text-blue-500" />
+            </Button>
           </td>
         </tr>
       );
@@ -100,6 +99,13 @@ export default function Table({ header, body }) {
                   User Management
                 </span>
               </h3>
+              <Button
+                onClickEvent={() => {
+                  dispatch(openUserAddModal());
+                }}
+                className="">
+                Add User
+              </Button>
             </div>
             {/* end card header */}
             {/* card body  */}
