@@ -1,22 +1,22 @@
 import React, { useEffect } from "react";
 import ReactModal from "react-modal";
 import toast, { Toaster } from "react-hot-toast";
-import { setList } from "../../../lib/redux/slices/userSlice";
-import { Table } from "../components";
+import { setList } from "../../../../lib/redux/slices/userSlice";
+import { Table } from "../../components";
 import { useDispatch, useSelector } from "react-redux";
-import { userService } from "../../../api/service";
-import { closeUserEditModal } from "../../../lib/redux/slices/userEditModalSlice";
-import { closeUserDeleteModal } from "../../../lib/redux/slices/userDeleteModalSlice";
+import { userService } from "../../../../api/service";
+import { closeUserEditModal } from "../../../../lib/redux/slices/userEditModalSlice";
+import { closeUserDeleteModal } from "../../../../lib/redux/slices/userDeleteModalSlice";
 import {
   XCircleIcon,
   ChevronDownIcon,
   ExclamationTriangleIcon,
 } from "@heroicons/react/24/solid";
-import { Dropdown, Space, Typography } from "antd";
-import { Button } from "../components";
-import { closeUserAddModal } from "../../../lib/redux/slices/userAddModalSlice";
+import { Dropdown, Typography } from "antd";
+import { Button } from "../../components";
+import { closeUserAddModal } from "../../../../lib/redux/slices/userAddModalSlice";
 
-export default function QuanLyNguoiDung() {
+export default function DesktopLayout() {
   const userList = useSelector((state) => state.user.list);
   const editTarget = useSelector((state) => state.userEditModal.editUser);
   const deleteTarget = useSelector((state) => state.userDeleteModal.deleteUser);
@@ -80,7 +80,6 @@ export default function QuanLyNguoiDung() {
   ];
 
   function closeModal(e) {
-    console.log(e);
     dispatch(closeUserEditModal());
     dispatch(closeUserDeleteModal());
     dispatch(closeUserAddModal());
@@ -108,12 +107,13 @@ export default function QuanLyNguoiDung() {
   };
 
   const handleDeleteUser = () => {
+    console.log(deleteTarget);
     const myPromise = userService.deleteUser(deleteTarget.taiKhoan);
     toast.promise(
       myPromise,
       {
         loading: "Loading",
-        success: (data) => `Delete Successfully`,
+        success: (data) => handleGetUsers(),
         error: (err) => `This just happened: ${err.toString()}`,
       },
       {
@@ -156,6 +156,8 @@ export default function QuanLyNguoiDung() {
     } else {
       handleGetUsers();
     }
+
+    // handleGetUsers();
   }, []);
 
   return (
@@ -165,8 +167,8 @@ export default function QuanLyNguoiDung() {
         isOpen={editModalOpen}
         // onAfterOpen={afterOpenModal}
         onRequestClose={closeModal}
-        className=""
         style={modalStyle}
+        ariaHideApp={false}
         contentLabel="User Edit Modal">
         <div className="flex flex-row items-center justify-between mb-4">
           <h2 className="inline-block font-semibold text-3xl text-gray-900">
@@ -286,7 +288,8 @@ export default function QuanLyNguoiDung() {
         // onAfterOpen={afterOpenModal}
         onRequestClose={closeModal}
         style={deleteModalStyle}
-        contentLabel="Example Modal">
+        contentLabel="Example Modal"
+        ariaHideApp={false}>
         <div className="bg-white rounded-lg md:max-w-md p-4 inset-x-0">
           <div className="md:flex items-center">
             <div className="rounded-full border border-gray-300 flex items-center justify-center w-20 h-20 flex-shrink-0 mx-auto">
@@ -317,7 +320,8 @@ export default function QuanLyNguoiDung() {
         // onAfterOpen={afterOpenModal}
         onRequestClose={closeModal}
         style={modalStyle}
-        contentLabel="Example Modal">
+        contentLabel="Example Modal"
+        ariaHideApp={false}>
         <div className="flex flex-row items-center justify-between mb-4">
           <h2 className="inline-block font-semibold text-3xl text-gray-900">
             New User

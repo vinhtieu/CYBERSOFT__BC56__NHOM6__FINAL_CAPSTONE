@@ -4,6 +4,7 @@ import {
   userEditModalSlice,
   userDeleteModalSlice,
   userAddModalSlice,
+  paginationSlice,
 } from "./slices";
 
 const store = configureStore({
@@ -12,6 +13,7 @@ const store = configureStore({
     userEditModal: userEditModalSlice,
     userDeleteModal: userDeleteModalSlice,
     userAddModal: userAddModalSlice,
+    pagination: paginationSlice,
   },
 });
 

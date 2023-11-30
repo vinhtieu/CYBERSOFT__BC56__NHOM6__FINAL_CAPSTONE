@@ -6,7 +6,7 @@ export default function Layout() {
   return (
     <div className="flex flex-row">
       <Sidebar></Sidebar>
-      <div className="flex-1 bg-[#f3f4f6]">
+      <div className="flex-1 bg-[#f3f4f6] h-screen overflow-auto">
         <Outlet />
       </div>
     </div>

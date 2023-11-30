@@ -1,10 +1,11 @@
 import React from "react";
 import { useNavigate } from "react-router";
+import { Bars4Icon } from "@heroicons/react/24/solid";
 
 export default function Sidebar() {
   const navigateTo = useNavigate();
   return (
-    <aside className="flex flex-col w-64 max-w-[256px] h-screen px-5 py-8 overflow-y-auto bg-white border-r rtl:border-r-0 rtl:border-l dark:bg-gray-900 dark:border-gray-700">
+    <aside className="flex flex-col relative w-64 min-w-[256px] h-screen px-5 py-8 overflow-y-auto bg-white border-r rtl:border-r-0 rtl:border-l dark:bg-gray-900 dark:border-gray-700">
       <a href="#">
         <img
           className="w-auto h-7"
@@ -64,6 +65,7 @@ export default function Sidebar() {
           </div>
         </nav>
       </div>
+      {/* <Bars4Icon className="absolute top-0 -right-10 w-10 h-10 z-50"></Bars4Icon> */}
     </aside>
   );
 }
