@@ -3,7 +3,7 @@ import banner from '../../../../../public/assets/banner.png'
  function Banner() {
   const [isHovered, setIsHovered] = React.useState(false);
   return (
-    <div className='bg-red-200 h-screen'>
+    <div className='bg-red-100 h-3/4-screen pb-20'>
        <div className='container grid grid-cols-2  items-center justify-center'>
         <div className='mt-20'>
           <h2 className='text-3xl mb-3 font-semibold' >Learn From Anywhere</h2>

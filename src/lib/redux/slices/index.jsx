@@ -1,1 +1,1 @@
-export { default as counterSlice } from "./counterSlice";
+export { default as courseSlice } from "./courseSlice";
