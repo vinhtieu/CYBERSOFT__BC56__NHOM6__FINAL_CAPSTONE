@@ -5,7 +5,7 @@ import {
 } from "../../../lib/redux/slices/userDeleteModalSlice";
 import {
   openUserEditModal,
-  setEditUser,
+  setInfo,
 } from "../../../lib/redux/slices/userEditModalSlice";
 import { openUserAddModal } from "../../../lib/redux/slices/userAddModalSlice";
 import { useDispatch, useSelector } from "react-redux";
@@ -35,67 +35,83 @@ export default function Table({ header, body }) {
 
   const renderTableBody = (data) => {
     console.log(data);
-    return data.map((user, index) => {
-      return (
-        <tr
-          key={index}
-          className="transition-all border-b border-dashed last:border-b-0 group text-left  ">
-          <td className="p-3 pl-0 min-w-[250px]">
-            <div className="flex items-center">
-              <div className="relative inline-block shrink-0 rounded-2xl me-3">
-                <img
-                  src="https://raw.githubusercontent.com/Loopple/loopple-public-assets/main/riva-dashboard-tailwind/img/img-47-new.jpg"
-                  className="w-[50px] h-[50px] inline-block shrink-0 rounded-2xl"
-                  alt=""
-                />
+    if (data.length > 0) {
+      return data.map((user, index) => {
+        return (
+          <tr
+            key={index}
+            className="transition-all border-b border-dashed last:border-b-0 group text-left  ">
+            <td className="p-3 pl-0 min-w-[250px]">
+              <div className="flex items-center">
+                <div className="relative inline-block shrink-0 rounded-2xl me-3">
+                  <img
+                    src="https://raw.githubusercontent.com/Loopple/loopple-public-assets/main/riva-dashboard-tailwind/img/img-47-new.jpg"
+                    className="w-[50px] h-[50px] inline-block shrink-0 rounded-2xl"
+                    alt=""
+                  />
+                </div>
+                <div className="flex flex-col justify-start">
+                  <a
+                    href="!~"
+                    className="mb-1 font-base transition-colors duration-200 ease-in-out text-lg/normal text-[#8f8f90] group-hover:text-black group-hover:font-semibold  hover:text-primary">
+                    {user.hoTen.length < 15
+                      ? user.hoTen
+                      : user.hoTen.slice(0, 14) + "..."}
+                  </a>
+                </div>
               </div>
-              <div className="flex flex-col justify-start">
-                <a
-                  href="!~"
-                  className="mb-1 font-base transition-colors duration-200 ease-in-out text-lg/normal text-[#8f8f90] group-hover:text-black group-hover:font-semibold  hover:text-primary">
-                  {user.hoTen.length < 15
-                    ? user.hoTen
-                    : user.hoTen.slice(0, 14) + "..."}
-                </a>
-              </div>
-            </div>
-          </td>
-          <td className="p-3 pl-0 min-w-[250px]">
-            <span className="font-base text-[#8f8f90] group-hover:text-black group-hover:font-semibold   text-md/normal">
-              {user.taiKhoan}
-            </span>
-          </td>
-          <td className="p-3 pl-0 min-w-[250px]">
-            <span className="inline-flex items-center py-1 mr-auto font-base text-center align-baseline rounded-lg text-base/none text-[#8f8f90] group-hover:text-black group-hover:font-semibold  bg-success-light">
-              {user.email}
-            </span>
-          </td>
-          <td className="p-3 pl-0 text-left ">
-            <span className="text-center align-baseline inline-flex  py-3 mr-auto items-center font-base text-[.95rem] leading-none text-[#8f8f90] group-hover:text-black group-hover:font-semibold  bg-success-light rounded-lg">
-              {user.soDT}
-            </span>
-          </td>
-          <td className="p-3 w-56 min-[1345px]:w-32 space-x-4 text-left min-w-[150px]">
-            <Button
-              onClickEvent={() => {
-                dispatch(openUserDeleteModal());
-                dispatch(setDeleteUser(user));
-              }}
-              className="!h-[40px] !w-[40px] !p-1.5 !mt-0 !border-0">
-              <TrashIcon className="text-red-500" />
-            </Button>
-            <Button
-              onClickEvent={() => {
-                dispatch(openUserEditModal());
-                dispatch(setEditUser(user));
-              }}
-              className="!h-[40px] !w-[40px] !p-1.5 !mt-0 !border-0">
-              <PencilSquareIcon className="text-blue-500" />
-            </Button>
-          </td>
-        </tr>
-      );
-    });
+            </td>
+            <td className="p-3 pl-0 min-w-[250px]">
+              <span className="font-base text-[#8f8f90] group-hover:text-black group-hover:font-semibold   text-md/normal">
+                {user.taiKhoan}
+              </span>
+            </td>
+            <td className="p-3 pl-0 min-w-[250px]">
+              <span className="inline-flex items-center py-1 mr-auto font-base text-center align-baseline rounded-lg text-base/none text-[#8f8f90] group-hover:text-black group-hover:font-semibold  bg-success-light">
+                {user.email}
+              </span>
+            </td>
+            <td className="p-3 pl-0 text-left ">
+              {user.maLoaiNguoiDung === "HV" ? (
+                <span className="text-center align-baseline inline-flex  py-3 mr-auto items-center font-base text-[.95rem] leading-none text-[#8f8f90] group-hover:text-black group-hover:font-semibold  bg-success-light rounded-lg">
+                  {user.tenLoaiNguoiDung}
+                </span>
+              ) : (
+                <span className="text-center align-baseline inline-flex  py-3 mr-auto items-center font-base text-[.95rem] leading-none text-[#8f8f90] group-hover:text-black group-hover:font-semibold  bg-success-light rounded-lg">
+                  {user.tenLoaiNguoiDung}
+                </span>
+              )}
+            </td>
+            <td className="p-3 pl-0 text-left ">
+              <span className="text-center align-baseline inline-flex  py-3 mr-auto items-center font-base text-[.95rem] leading-none text-[#8f8f90] group-hover:text-black group-hover:font-semibold  bg-success-light rounded-lg">
+                {user.soDT}
+              </span>
+            </td>
+
+            <td className="p-3 w-56 min-[1345px]:w-32 space-x-4 text-left min-w-[150px]">
+              <Button
+                onClickEvent={() => {
+                  dispatch(openUserDeleteModal());
+                  dispatch(setDeleteUser(user));
+                }}
+                className="!h-[40px] !w-[40px] !p-1.5 !mt-0 !border-0">
+                <TrashIcon className="text-red-500" />
+              </Button>
+              <Button
+                onClickEvent={() => {
+                  dispatch(openUserEditModal());
+                  dispatch(setInfo(user));
+                }}
+                className="!h-[40px] !w-[40px] !p-1.5 !mt-0 !border-0">
+                <PencilSquareIcon className="text-blue-500" />
+              </Button>
+            </td>
+          </tr>
+        );
+      });
+    } else {
+      return <></>;
+    }
   };
 
   return (

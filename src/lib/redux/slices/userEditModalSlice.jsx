@@ -2,7 +2,8 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   isOpen: false,
-  editUser: {},
+  info: {},
+  courses: {},
 };
 
 const UserEditModalSlice = createSlice({
@@ -15,13 +16,16 @@ const UserEditModalSlice = createSlice({
     closeUserEditModal: (state) => {
       state.isOpen = false;
     },
-    setEditUser: (state, action) => {
-      state.editUser = action.payload;
+    setInfo: (state, action) => {
+      state.info = action.payload;
+    },
+    setCourses: (state, action) => {
+      state.courses = action.payload;
     },
   },
 });
 
-export const { openUserEditModal, closeUserEditModal, setEditUser } =
+export const { openUserEditModal, closeUserEditModal, setInfo, setCourses } =
   UserEditModalSlice.actions;
 
 export default UserEditModalSlice.reducer;

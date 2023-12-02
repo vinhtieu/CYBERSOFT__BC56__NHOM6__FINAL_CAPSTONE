@@ -17,4 +17,11 @@ export const userService = {
       `/api/QuanLyNguoiDung/XoaNguoiDung?TaiKhoan=${account}`
     );
   },
+
+  getCoursesByUser: (user) => {
+    return HTTPS.post(
+      `/api/QuanLyNguoiDung/LayDanhSachKhoaHocDaXetDuyet`,
+      user
+    );
+  },
 };
