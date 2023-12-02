@@ -24,6 +24,7 @@ export default function Table({ header, body }) {
   const currentPageSize = useSelector((state) => state.pagination.pageSize);
   const totalItem = useSelector((state) => state.pagination.total);
   const renderTableHeader = (data) => {
+    console.count("render table header");
     return data.map((title, index) => {
       return (
         <th key={index} className="pb-3 text-left min-w-[250px] text-lg">
@@ -34,14 +35,14 @@ export default function Table({ header, body }) {
   };
 
   const renderTableBody = (data) => {
-    console.log(data);
+    console.count("render table body");
     if (data.length > 0) {
       return data.map((user, index) => {
         return (
           <tr
             key={index}
-            className="transition-all border-b border-dashed last:border-b-0 group text-left  ">
-            <td className="p-3 pl-0 min-w-[250px]">
+            className="transition-all border-b border-dashed last:border-b-0 group text-left  hover:bg-[#f5f5f5] px-1">
+            <td className="p-3  min-w-[250px]">
               <div className="flex items-center">
                 <div className="relative inline-block shrink-0 rounded-2xl me-3">
                   <img
@@ -51,43 +52,40 @@ export default function Table({ header, body }) {
                   />
                 </div>
                 <div className="flex flex-col justify-start">
-                  <a
-                    href="!~"
-                    className="mb-1 font-base transition-colors duration-200 ease-in-out text-lg/normal text-[#8f8f90] group-hover:text-black group-hover:font-semibold  hover:text-primary">
+                  <span className="mb-1  transition-all  ease-in-out  text-[#8f8f90]  group-hover:text-black text-base">
                     {user.hoTen.length < 15
                       ? user.hoTen
                       : user.hoTen.slice(0, 14) + "..."}
-                  </a>
+                  </span>
                 </div>
               </div>
             </td>
             <td className="p-3 pl-0 min-w-[250px]">
-              <span className="font-base text-[#8f8f90] group-hover:text-black group-hover:font-semibold   text-md/normal">
+              <span className=" text-[#8f8f90] group-hover:text-black transition-all text-base">
                 {user.taiKhoan}
               </span>
             </td>
             <td className="p-3 pl-0 min-w-[250px]">
-              <span className="inline-flex items-center py-1 mr-auto font-base text-center align-baseline rounded-lg text-base/none text-[#8f8f90] group-hover:text-black group-hover:font-semibold  bg-success-light">
+              <span className="inline-flex items-center py-1 mr-auto  text-center align-baseline rounded-lg text-base text-[#8f8f90]  group-hover:text-black transition-all">
                 {user.email}
               </span>
             </td>
             <td className="p-3 pl-0 text-left ">
               {user.maLoaiNguoiDung === "HV" ? (
-                <span className="text-center align-baseline inline-flex  py-3 mr-auto items-center font-base text-[.95rem] leading-none text-[#8f8f90] group-hover:text-black group-hover:font-semibold  bg-success-light rounded-lg">
+                <span className="text-center text-base align-baseline inline-flex  py-3 mr-auto items-center   leading-none text-red-500 border border-red-500  p-2 rounded-lg ">
                   {user.tenLoaiNguoiDung}
                 </span>
               ) : (
-                <span className="text-center align-baseline inline-flex  py-3 mr-auto items-center font-base text-[.95rem] leading-none text-[#8f8f90] group-hover:text-black group-hover:font-semibold  bg-success-light rounded-lg">
+                <span className="text-center text-base align-baseline inline-flex  py-3 mr-auto items-center   leading-none text-green-500 border border-green-500  p-2 rounded-lg">
                   {user.tenLoaiNguoiDung}
                 </span>
               )}
             </td>
             <td className="p-3 pl-0 text-left ">
-              <span className="text-center align-baseline inline-flex  py-3 mr-auto items-center font-base text-[.95rem] leading-none text-[#8f8f90] group-hover:text-black group-hover:font-semibold  bg-success-light rounded-lg">
+              <span className="text-center text-base align-baseline inline-flex  py-3 mr-auto items-center   leading-none text-[#8f8f90] group-hover:text-black transition-all rounded-lg">
                 {user.soDT}
               </span>
             </td>
-
             <td className="p-3 w-56 min-[1345px]:w-32 space-x-4 text-left min-w-[150px]">
               <Button
                 onClickEvent={() => {
@@ -102,7 +100,7 @@ export default function Table({ header, body }) {
                   dispatch(openUserEditModal());
                   dispatch(setInfo(user));
                 }}
-                className="!h-[40px] !w-[40px] !p-1.5 !mt-0 !border-0">
+                className="!h-[40px] !w-[40px] !p-1.5 !mt-0 !border-0 flex place-items-center">
                 <PencilSquareIcon className="text-blue-500" />
               </Button>
             </td>
@@ -117,10 +115,8 @@ export default function Table({ header, body }) {
   return (
     <div className="relative flex flex-col break-words min-w-0 bg-clip-border rounded-[.95rem] max-w-full bg-white m-5 overflow-hidden ">
       <div className="px-9 pt-5 flex justify-between items-stretch flex-wrap min-h-[70px] pb-0 bg-transparent">
-        <h3 className="m-2 ml-0 font-medium text-xl/tight text-dark">
-          <span className="mr-3 text-3xl font-base text-dark">
-            User Management
-          </span>
+        <h3 className="m-2 ml-0 font-medium  ">
+          <span className="mr-3 text-3xl">User Management</span>
         </h3>
         <Button
           onClickEvent={() => {
@@ -132,9 +128,9 @@ export default function Table({ header, body }) {
       </div>
       {/* table Container */}
       <div className="py-8 pt-6 px-9 overflow-x-auto">
-        <table className="max-w-[100%] w-full my-0 align-middle text-dark border-neutral-200">
+        <table className="max-w-[100%] w-full my-0 align-middle  border-neutral-200">
           <thead className="align-bottom">
-            <tr className="font-base text-left text-[0.95rem] text-secondary-dark">
+            <tr className=" text-left ">
               {renderTableHeader(header)}
               <th></th>
             </tr>
@@ -156,7 +152,6 @@ export default function Table({ header, body }) {
             dispatch(setPageSize(pageSize));
             dispatch(updateURL());
           }}
-          size="medium"
           rootClassName="!ml-auto"
         />
       </div>
@@ -169,8 +164,8 @@ export default function Table({ header, body }) {
 //   {/* <div className="relative flex flex-col min-w-0 break-words border border-dashed bg-clip-border rounded-2xl border-stone-200 bg-light/30"> */}
 //   {/* card header */}
 //   <div className="px-9 pt-5 flex justify-between items-stretch flex-wrap min-h-[70px] pb-0 bg-transparent">
-//     <h3 className="flex flex-col items-start justify-center m-2 ml-0 font-medium text-xl/tight text-dark">
-//       <span className="mr-3 text-3xl font-base text-dark">
+//     <h3 className="flex flex-col items-start justify-center m-2 ml-0 font-medium  ">
+//       <span className="mr-3 text-3xl  ">
 //         User Management
 //       </span>
 //     </h3>
@@ -186,9 +181,9 @@ export default function Table({ header, body }) {
 //   {/* card body  */}
 //   <div className="w-full overflow-auto py-8 pt-6 px-9 flex">
 //     {/* <div className="flex-1 overflow-x-scroll"> */}
-//     <table className="w-full my-0 align-middle text-dark border-neutral-200">
+//     <table className="w-full my-0 align-middle  border-neutral-200">
 //       <thead className="align-bottom">
-//         <tr className="font-base text-left text-[0.95rem] text-secondary-dark">
+//         <tr className=" text-left text-[0.95rem] text-secondary-dark">
 //           {renderTableHeader(header)}
 //           <th></th>
 //         </tr>

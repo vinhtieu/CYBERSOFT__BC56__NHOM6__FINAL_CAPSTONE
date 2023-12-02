@@ -12,9 +12,7 @@ import {
 } from "../../../../lib/redux/slices/userEditModalSlice";
 import { closeUserDeleteModal } from "../../../../lib/redux/slices/userDeleteModalSlice";
 import toast from "react-hot-toast";
-// import { usestore.dispatch } from "react-redux";
 import store from "../../../../lib/redux/store";
-// const store.dispatch = usestore.dispatch();
 
 export const handleCloseModal = (e) => {
   store.dispatch(closeUserEditModal());
@@ -23,24 +21,24 @@ export const handleCloseModal = (e) => {
 };
 
 export const handleUpdateUser = () => {
-  const myPromise = userService.updateUser(editTarget);
-  toast.promise(
-    myPromise,
-    {
-      loading: "Loading",
-      success: (data) => `Delete Successfully`,
-      error: (err) => `This just happened: ${err.toString()}`,
-    },
-    {
-      style: {
-        minWidth: "250px",
-      },
-      success: {
-        duration: 5000,
-        icon: "🔥",
-      },
-    }
-  );
+  // const myPromise = userService.updateUser(editTarget);
+  // toast.promise(
+  //   myPromise,
+  //   {
+  //     loading: "Loading",
+  //     success: (data) => `Delete Successfully`,
+  //     error: (err) => `This just happened: ${err.toString()}`,
+  //   },
+  //   {
+  //     style: {
+  //       minWidth: "250px",
+  //     },
+  //     success: {
+  //       duration: 5000,
+  //       icon: "🔥",
+  //     },
+  //   }
+  // );
 };
 
 export const handleDeleteUser = (user) => {
@@ -50,16 +48,28 @@ export const handleDeleteUser = (user) => {
     myPromise,
     {
       loading: "Loading",
-      success: (data) => handleGetUsers(),
-      error: (err) => `This just happened: ${err.toString()}`,
+      success: (data) => {
+        handleGetUsers();
+        return "User deleted successfully!";
+      },
+      error: (err) => {
+        setTimeout(() => {
+          handleCloseModal();
+        }, 1500);
+
+        return err.response.data;
+      },
     },
     {
       style: {
-        minWidth: "250px",
+        minWidth: "300px",
+        fontSize: "16px",
       },
       success: {
-        duration: 5000,
-        icon: "🔥",
+        duration: 1200,
+      },
+      error: {
+        duration: 1200,
       },
     }
   );
