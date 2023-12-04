@@ -61,14 +61,18 @@ import {
   handleCloseModal,
   handleDeleteUser,
   handleGetUsers,
-  handleGetCoursesByUser,
   handleMenuClick,
+  handleUserInputs,
+  handleUpdateUser,
 } from "./helpers";
+import "./style.css";
 
 export default function QuanLyNguoiDung() {
   const userList = useSelector((state) => state.user.list);
+  const searchKey = useSelector((state) => state.userEditModal.searchKey);
   const userInfo = useSelector((state) => state.userEditModal.info);
   const userCourses = useSelector((state) => state.userEditModal.courses);
+  const editUserInfo = useSelector((state) => state.userEditModal.editedData);
   const deleteTarget = useSelector((state) => state.userDeleteModal.deleteUser);
   const currentPage = useSelector((state) => state.pagination.page);
   const currentPageSize = useSelector((state) => state.pagination.pageSize);
@@ -101,123 +105,107 @@ export default function QuanLyNguoiDung() {
     },
   };
 
-  const items = [
-    {
-      label: "1st menu item",
-      key: "1",
-      // icon: <UserOutlined />,
-    },
-    {
-      label: "2nd menu item",
-      key: "2",
-      // icon: <UserOutlined />,
-    },
-    {
-      label: "3rd menu item",
-      key: "3",
-      // icon: <UserOutlined />,
-      danger: true,
-    },
-    {
-      label: "4rd menu item",
-      key: "4",
-      // icon: <UserOutlined />,
-      danger: true,
-      disabled: true,
-    },
-  ];
-
   const profileCatagories = [
     {
       key: "1",
       label: "Info",
+      forceRender: true,
       children: (
-        <form>
-          <div className="flex-1">
-            {/* <dl className="divide-y divide-gray-100"> */}
-            <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-              <dt className="text-base font-medium leading-6 text-gray-900">
-                Full name
-              </dt>
-              <input
-                type="text"
-                name="first-name"
-                id="first-name"
-                autoComplete="given-name"
-                placeholder={userInfo.hoTen}
-                className="col-span-2 block w-full p-2 text-gray-900 placeholder:text-black sm:text-base sm:leading-6 border-b-2 border-b-slate-300  focus:border-b-black focus-visible:outline-none"
-              />
-            </div>
-            <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-              <dt className="text-base font-medium leading-6 text-gray-900">
-                Username
-              </dt>
-              <input
-                type="text"
-                name="first-name"
-                id="first-name"
-                autoComplete="given-name"
-                placeholder={userInfo.taiKhoan}
-                className="col-span-2 block w-full p-2 text-gray-900 placeholder:text-black  sm:text-base sm:leading-6 border-b-2 border-b-slate-300  focus:border-b-black focus-visible:outline-none"
-              />
-            </div>
-            <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-              <dt className="text-base font-medium leading-6 text-gray-900">
-                Email address
-              </dt>
-              <input
-                type="text"
-                name="first-name"
-                id="first-name"
-                autoComplete="given-name"
-                placeholder={userInfo.email}
-                className="col-span-2 block w-full p-2 text-gray-900 placeholder:text-black  sm:text-base sm:leading-6 border-b-2 border-b-slate-300  focus:border-b-black focus-visible:outline-none"
-              />
-            </div>
-            <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-              <dt className="text-base font-medium leading-6 text-gray-900">
-                Phone Number
-              </dt>
-              <input
-                type="text"
-                name="first-name"
-                id="first-name"
-                autoComplete="given-name"
-                placeholder={userInfo.soDt}
-                className="col-span-2 block w-full p-2 text-gray-900 placeholder:text-black  sm:text-base sm:leading-6 border-b-2 border-b-slate-300  focus:border-b-black focus-visible:outline-none"
-              />
-            </div>
-            <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-              <h3 className="text-base font-medium leading-6 text-gray-900 text-">
-                Position
-              </h3>
-              <Dropdown
-                menu={{
-                  items,
-                  onClick: handleMenuClick,
-                  selectable: true,
-                  defaultSelectedKeys: ["3"],
-                }}>
-                <Typography.Link>
-                  <div className="flex flex-row gap-2 items-center border rounded-md px-3 py-2 w-fit">
-                    Selectable
-                    <ChevronDownIcon className="w-5 h-5" />
-                  </div>
-                </Typography.Link>
-              </Dropdown>
-            </div>
-            {/* </dl> */}
+        <form className="">
+          {/* <dl className="divide-y divide-gray-100"> */}
+          <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+            <dt className="text-base font-medium leading-6 text-gray-900">
+              Full name
+            </dt>
+            <input
+              type="text"
+              name="first-name"
+              id="first-name"
+              autoComplete="given-name"
+              placeholder={userInfo?.hoTen}
+              onChange={(e) => {
+                console.log({ hoTen: e.target.value });
+                handleUserInputs({ hoTen: e.target.value });
+              }}
+              className="col-span-2 block w-full p-2 text-gray-900 placeholder:text-black sm:text-base sm:leading-6 border-b-2 border-b-slate-300  focus:border-b-black focus-visible:outline-none"
+            />
           </div>
+          <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+            <dt className="text-base font-medium leading-6 text-gray-900">
+              Username
+            </dt>
+            <input
+              type="text"
+              name="first-name"
+              id="first-name"
+              autoComplete="given-name"
+              placeholder={userInfo?.taiKhoan}
+              onChange={(e) => {
+                handleUserInputs({ taiKhoan: e.target.value });
+              }}
+              className="col-span-2 block w-full p-2 text-gray-900 placeholder:text-black  sm:text-base sm:leading-6 border-b-2 border-b-slate-300  focus:border-b-black focus-visible:outline-none"
+            />
+          </div>
+          <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+            <dt className="text-base font-medium leading-6 text-gray-900">
+              Password
+            </dt>
+            <input
+              type="text"
+              name="first-name"
+              id="first-name"
+              autoComplete="given-name"
+              placeholder={userInfo?.matKhau}
+              onChange={(e) => {
+                handleUserInputs({ matKhau: e.target.value });
+              }}
+              className="col-span-2 block w-full p-2 text-gray-900 placeholder:text-black  sm:text-base sm:leading-6 border-b-2 border-b-slate-300  focus:border-b-black focus-visible:outline-none"
+            />
+          </div>
+          <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+            <dt className="text-base font-medium leading-6 text-gray-900">
+              Email address
+            </dt>
+            <input
+              type="text"
+              name="first-name"
+              id="first-name"
+              autoComplete="given-name"
+              placeholder={userInfo?.email}
+              onChange={(e) => {
+                handleUserInputs({ email: e.target.value });
+              }}
+              className="col-span-2 block w-full p-2 text-gray-900 placeholder:text-black  sm:text-base sm:leading-6 border-b-2 border-b-slate-300  focus:border-b-black focus-visible:outline-none"
+            />
+          </div>
+          <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+            <dt className="text-base font-medium leading-6 text-gray-900">
+              Phone Number
+            </dt>
+            <input
+              type="text"
+              name="first-name"
+              id="first-name"
+              autoComplete="given-name"
+              placeholder={userInfo?.soDt}
+              onChange={(e) => {
+                handleUserInputs({ soDT: e.target.value });
+              }}
+              className="col-span-2 block w-full p-2 text-gray-900 placeholder:text-black  sm:text-base sm:leading-6 border-b-2 border-b-slate-300  focus:border-b-black focus-visible:outline-none"
+            />
+          </div>
+          {/* </dl> */}
         </form>
       ),
     },
     {
       key: "2",
       label: "Courses",
+      forceRender: true,
       children: !editModalOpen ? (
         <span></span>
       ) : (
-        <div className="flex flex-row flex-wrap overflow-auto">
+        <div className="flex flex-row flex-wrap overflow-auto w-full h-full">
           {userCourses.length > 0 ? (
             userCourses.map((course) => {
               console.log(course);
@@ -254,23 +242,19 @@ export default function QuanLyNguoiDung() {
               );
             })
           ) : (
-            <img
-              // key={course.maKhoaHoc}
-              className="flex-1"
-              src="https://i.pinimg.com/originals/ae/8a/c2/ae8ac2fa217d23aadcc913989fcc34a2.png"
-              alt=""
-            />
+            <figure className="w-full h-full mb-0">
+              <img
+                // key={course.m5aKhoaHoc}
+                className="w-[95%] h-full object-contain mx-auto"
+                src="https://i.pinimg.com/originals/ae/8a/c2/ae8ac2fa217d23aadcc913989fcc34a2.png"
+                alt=""
+              />
+            </figure>
           )}
         </div>
       ),
     },
   ];
-
-  const onChange = (key) => {
-    if (key === "2") {
-      handleGetCoursesByUser(userInfo.taiKhoan);
-    }
-  };
 
   useEffect(() => {
     const data = JSON.parse(sessionStorage.getItem("userList"));
@@ -295,7 +279,6 @@ export default function QuanLyNguoiDung() {
       {/* //Edit Form */}
       <ReactModal
         isOpen={editModalOpen}
-        // onAfterOpen={afterOpenModal}
         onRequestClose={handleCloseModal}
         style={modalStyle}
         ariaHideApp={false}
@@ -314,8 +297,7 @@ export default function QuanLyNguoiDung() {
           <Tabs
             defaultActiveKey="1"
             items={profileCatagories}
-            onChange={onChange}
-            rootClassName=""
+            rootClassName="flex-1 flex-col"
           />
           <div className="flex flex-row justify-end items-center pt-6 pb-3 gap-4 m-0 mt-auto">
             <Button onClickEvent={handleCloseModal} className="">
@@ -323,7 +305,9 @@ export default function QuanLyNguoiDung() {
             </Button>
 
             <Button
-              onClickEvent={handleCloseModal}
+              onClickEvent={() => {
+                handleUpdateUser(userInfo, editUserInfo);
+              }}
               className="!bg-black !text-white">
               Save
             </Button>
@@ -451,25 +435,7 @@ export default function QuanLyNguoiDung() {
                   className="col-span-2 block w-full p-2 text-gray-900 placeholder:text-black  sm:text-base sm:leading-6 border-b-2 border-b-slate-300  focus:border-b-black focus-visible:outline-none"
                 />
               </div>
-              <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                <h3 className="text-base font-medium leading-6 text-gray-900 text-">
-                  Position
-                </h3>
-                <Dropdown
-                  menu={{
-                    items,
-                    onClick: handleMenuClick,
-                    selectable: true,
-                    defaultSelectedKeys: ["3"],
-                  }}>
-                  <Typography.Link>
-                    <div className="flex flex-row gap-2 items-center border rounded-md px-3 py-2 w-fit">
-                      Selectable
-                      <ChevronDownIcon className="w-5 h-5" />
-                    </div>
-                  </Typography.Link>
-                </Dropdown>
-              </div>
+
               {/* </dl> */}
             </div>
             <div className="flex flex-row justify-end items-center pt-6 pb-3 gap-4 m-0">
@@ -487,7 +453,9 @@ export default function QuanLyNguoiDung() {
           </div>
         </form>
       </ReactModal>
-      <Toaster />
+      <Toaster
+        toastOptions={{ duration: 1200, style: { minWidth: "250px" } }}
+      />
     </>
   );
 }

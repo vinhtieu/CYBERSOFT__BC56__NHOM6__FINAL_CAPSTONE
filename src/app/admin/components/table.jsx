@@ -5,6 +5,7 @@ import {
 } from "../../../lib/redux/slices/userDeleteModalSlice";
 import {
   openUserEditModal,
+  setCourses,
   setInfo,
 } from "../../../lib/redux/slices/userEditModalSlice";
 import { openUserAddModal } from "../../../lib/redux/slices/userAddModalSlice";
@@ -17,17 +18,46 @@ import {
   setPageSize,
   updateURL,
 } from "../../../lib/redux/slices/paginationSlice";
+import { userService } from "../../../api/service";
 
 export default function Table({ header, body }) {
-  const dispatch = useDispatch();
   const currentPage = useSelector((state) => state.pagination.page);
   const currentPageSize = useSelector((state) => state.pagination.pageSize);
   const totalItem = useSelector((state) => state.pagination.total);
+  const dispatch = useDispatch();
+
+  const handleGetUserDetailByPhoneNumber = (data) => {
+    userService
+      .getUserDetail(`${data}`)
+      .then((res) => {
+        dispatch(setInfo(res.data[0]));
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const handleGetCourseByUser = (acc) => {
+    userService
+      .getCoursesByUser({
+        taiKhoan: acc,
+      })
+      .then((res) => {
+        dispatch(setCourses(res.data));
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   const renderTableHeader = (data) => {
-    console.count("render table header");
     return data.map((title, index) => {
-      return (
-        <th key={index} className="pb-3 text-left min-w-[250px] text-lg">
+      return index === 0 ? (
+        <th key={index} className="p-3 text-left max-w-[250px] text-lg">
+          {title}
+        </th>
+      ) : (
+        <th key={index} className="p-3 pl-0 text-left max-w-[250px] text-lg">
           {title}
         </th>
       );
@@ -35,14 +65,13 @@ export default function Table({ header, body }) {
   };
 
   const renderTableBody = (data) => {
-    console.count("render table body");
     if (data.length > 0) {
       return data.map((user, index) => {
         return (
           <tr
             key={index}
-            className="transition-all border-b border-dashed last:border-b-0 group text-left  hover:bg-[#f5f5f5] px-1">
-            <td className="p-3  min-w-[250px]">
+            className="transition-all border-b border-dashed last:border-b-0 group text-left  hover:bg-[#f5f5f5]">
+            <td className="p-3 w-[calc(100%/5)]">
               <div className="flex items-center">
                 <div className="relative inline-block shrink-0 rounded-2xl me-3">
                   <img
@@ -60,17 +89,17 @@ export default function Table({ header, body }) {
                 </div>
               </div>
             </td>
-            <td className="p-3 pl-0 min-w-[250px]">
+            <td className="p-3 w-[calc(100%/5)]  pl-0 ">
               <span className=" text-[#8f8f90] group-hover:text-black transition-all text-base">
                 {user.taiKhoan}
               </span>
             </td>
-            <td className="p-3 pl-0 min-w-[250px]">
+            <td className="p-3 w-[calc(100%/5)]  pl-0 ">
               <span className="inline-flex items-center py-1 mr-auto  text-center align-baseline rounded-lg text-base text-[#8f8f90]  group-hover:text-black transition-all">
                 {user.email}
               </span>
             </td>
-            <td className="p-3 pl-0 text-left ">
+            <td className="p-3 w-[calc(100%/5)]  pl-0 text-left ">
               {user.maLoaiNguoiDung === "HV" ? (
                 <span className="text-center text-base align-baseline inline-flex  py-3 mr-auto items-center   leading-none text-red-500 border border-red-500  p-2 rounded-lg ">
                   {user.tenLoaiNguoiDung}
@@ -81,12 +110,12 @@ export default function Table({ header, body }) {
                 </span>
               )}
             </td>
-            <td className="p-3 pl-0 text-left ">
+            <td className="p-3 w-[calc(100%/5)]  pl-0 text-left ">
               <span className="text-center text-base align-baseline inline-flex  py-3 mr-auto items-center   leading-none text-[#8f8f90] group-hover:text-black transition-all rounded-lg">
                 {user.soDT}
               </span>
             </td>
-            <td className="p-3 w-56 min-[1345px]:w-32 space-x-4 text-left min-w-[150px]">
+            <td className="p-3  space-x-4 text-left min-w-[150px]">
               <Button
                 onClickEvent={() => {
                   dispatch(openUserDeleteModal());
@@ -98,7 +127,8 @@ export default function Table({ header, body }) {
               <Button
                 onClickEvent={() => {
                   dispatch(openUserEditModal());
-                  dispatch(setInfo(user));
+                  handleGetUserDetailByPhoneNumber(user.soDT);
+                  handleGetCourseByUser(user.taiKhoan);
                 }}
                 className="!h-[40px] !w-[40px] !p-1.5 !mt-0 !border-0 flex place-items-center">
                 <PencilSquareIcon className="text-blue-500" />

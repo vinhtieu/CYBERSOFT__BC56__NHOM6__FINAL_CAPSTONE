@@ -9,6 +9,8 @@ import { userService } from "../../../../api/service";
 import {
   closeUserEditModal,
   setCourses,
+  setEditedData,
+  setInfo,
 } from "../../../../lib/redux/slices/userEditModalSlice";
 import { closeUserDeleteModal } from "../../../../lib/redux/slices/userDeleteModalSlice";
 import toast from "react-hot-toast";
@@ -18,69 +20,72 @@ export const handleCloseModal = (e) => {
   store.dispatch(closeUserEditModal());
   store.dispatch(closeUserDeleteModal());
   store.dispatch(closeUserAddModal());
+  store.dispatch(setInfo());
 };
 
-export const handleUpdateUser = () => {
-  // const myPromise = userService.updateUser(editTarget);
-  // toast.promise(
-  //   myPromise,
-  //   {
-  //     loading: "Loading",
-  //     success: (data) => `Delete Successfully`,
-  //     error: (err) => `This just happened: ${err.toString()}`,
-  //   },
-  //   {
-  //     style: {
-  //       minWidth: "250px",
-  //     },
-  //     success: {
-  //       duration: 5000,
-  //       icon: "🔥",
-  //     },
-  //   }
-  // );
+export const handleUpdateUser = (prevData, newData) => {
+  const reducedData = newData.reduce((prevValue, currValue) => {
+    for (const key in currValue) {
+      if (currValue.hasOwnProperty(key)) {
+        prevValue[key] = currValue[key];
+      }
+    }
+    return prevValue;
+  }, {});
+
+  console.log("prevData: ", prevData);
+  const user = {
+    taiKhoan: reducedData.taiKhoan ? reducedData.taiKhoan : prevData.taiKhoan,
+    matKhau: reducedData.matKhau ? reducedData.matKhau : prevData.matKhau,
+    hoTen: reducedData.hoTen ? reducedData.hoTen : prevData.hoTen,
+    soDT: reducedData.soDT ? reducedData.soDT : prevData.soDt,
+    maLoaiNguoiDung: reducedData.maLoaiNguoiDung
+      ? reducedData.maLoaiNguoiDung
+      : prevData.maLoaiNguoiDung,
+    maNhom: "GP01",
+    email: reducedData.email ? reducedData.email : "",
+  };
+
+  console.log(user);
+
+  const myPromise = userService.updateUser(user);
+  toast.promise(myPromise, {
+    loading: "Loading ...",
+    success: (data) => {
+      handleGetUsers();
+      return `Save Successfully`;
+    },
+    error: (err) => `This just happened: ${err.toString()}`,
+  });
 };
 
 export const handleDeleteUser = (user) => {
-  console.log(user);
-  const myPromise = userService.deleteUser(user?.taiKhoan);
-  toast.promise(
-    myPromise,
-    {
-      loading: "Loading",
-      success: (data) => {
-        handleGetUsers();
-        return "User deleted successfully!";
-      },
-      error: (err) => {
-        setTimeout(() => {
-          handleCloseModal();
-        }, 1500);
-
-        return err.response.data;
-      },
-    },
-    {
-      style: {
-        minWidth: "300px",
-        fontSize: "16px",
-      },
-      success: {
-        duration: 1200,
-      },
-      error: {
-        duration: 1200,
-      },
-    }
-  );
+  const toastId = toast.loading("Loading...");
+  userService
+    .deleteUser(user?.taiKhoan)
+    .then(() => {
+      handleGetUsers();
+      toast.success("Delete successfully!", {
+        id: toastId,
+      });
+    })
+    .catch((err) => {
+      toast.error(`${err.response.data}`, {
+        id: toastId,
+      });
+    })
+    .finally(() => {
+      setTimeout(() => {
+        handleCloseModal();
+      }, 1500);
+    });
 };
 
 export const handleGetUsers = (page = 1, pageSize = 10) => {
-  console.log("hi");
+  console.count("handleGetUsers");
   userService
     .getUsers(page, pageSize)
     .then((res) => {
-      console.log(res);
       store.dispatch(setPage(page));
       store.dispatch(setPageSize(pageSize));
       store.dispatch(setTotalItem(res.data.totalCount));
@@ -92,20 +97,8 @@ export const handleGetUsers = (page = 1, pageSize = 10) => {
     });
 };
 
-export const handleGetCoursesByUser = (acc) => {
-  const payload = {
-    taiKhoan: acc,
-  };
-
-  userService
-    .getCoursesByUser(payload)
-    .then((res) => {
-      console.log(res.data);
-      store.dispatch(setCourses(res.data));
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+export const handleUserInputs = (data) => {
+  store.dispatch(setEditedData(data));
 };
 
 export const handleMenuClick = (e) => {

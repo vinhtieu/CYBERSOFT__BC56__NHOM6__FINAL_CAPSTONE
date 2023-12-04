@@ -17,6 +17,11 @@ export const userService = {
       `/api/QuanLyNguoiDung/XoaNguoiDung?TaiKhoan=${account}`
     );
   },
+  getUserDetail: (account) => {
+    return HTTPS.get(
+      `/api/QuanLyNguoiDung/TimKiemNguoiDung?MaNhom=GP01&tuKhoa=${account}`
+    );
+  },
 
   getCoursesByUser: (user) => {
     return HTTPS.post(
