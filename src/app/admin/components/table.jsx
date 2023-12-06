@@ -13,6 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { TrashIcon, PencilSquareIcon } from "@heroicons/react/24/solid";
 import { Pagination } from "antd";
 import Button from "./button";
+import Search from "./search";
 import {
   setPage,
   setPageSize,
@@ -95,6 +96,11 @@ export default function Table({ header, body }) {
           {title}
         </th>
       ) : (
+        // <th
+        //   key={index}
+        //   className="p-3 text-left min-w-[250px] text-lg leading-6">
+        //   {title}
+        // </th>
         <th key={index} className="p-3 pl-0 text-left min-w-[150px] text-lg">
           {title}
         </th>
@@ -187,15 +193,16 @@ export default function Table({ header, body }) {
     max-[767.98px]:px-8 max-[767.98px]:py-6
     px-8 py-8 rounded-[.95rem] max-w-full bg-white m-5 overflow-hidden ">
       <div
-        className={` flex flex-wrap  p-0 max-[767.98px]:mb-6 mb-2 ${
+        className={` flex flex-wrap  p-0 max-[767.98px]:mb-6 mb-4 ${
           sidebarMode === MODE.MOBILE
             ? "flex-col items-center gap-4"
             : "flex-row items-center justify-between"
         }`}>
         <h3
-          className={` ml-0 font-medium  max-[389.98px]:text-xl text-3xl block`}>
+          className={` ml-0 font-medium pl-3  max-[389.98px]:text-xl text-3xl block`}>
           User Management
         </h3>
+        <Search></Search>
       </div>
       {/* table Container */}
       <div className="mb-4 overflow-x-auto">
@@ -211,7 +218,7 @@ export default function Table({ header, body }) {
       </div>
       {/* table Container */}
       <div
-        className={`flex flex-row items-center  max-[939.98px]:justify-center justify-between`}>
+        className={`p-3 flex flex-row items-center  max-[939.98px]:justify-center justify-between`}>
         <span className="text-base max-[939.98px]:hidden">{`Total ${totalItem} items`}</span>
         {renderPagination()}
       </div>

@@ -81,7 +81,7 @@ export const handleDeleteUser = (user) => {
     });
 };
 
-export const handleGetUsers = (page = 1, pageSize = 10) => {
+export const handleGetUsers = (page, pageSize) => {
   console.count("handleGetUsers");
   userService
     .getUsers(page, pageSize)
