@@ -26,7 +26,7 @@ import {
 } from "./helpers";
 import "./style.css";
 
-export default function DesktopLayout() {
+export default function MobileLayout() {
   const userList = useSelector((state) => state.user.list);
   const searchKey = useSelector((state) => state.userEditModal.searchKey);
   const userInfo = useSelector((state) => state.userEditModal.info);
@@ -39,13 +39,7 @@ export default function DesktopLayout() {
   const deleteModalOpen = useSelector((state) => state.userDeleteModal.isOpen);
   const addModalOpen = useSelector((state) => state.userAddModal.isOpen);
 
-  const tableHeader = [
-    "Name",
-    "Account",
-    "Email",
-    "Loại Người Dùng",
-    "Telephone",
-  ];
+  const tableHeader = ["Name", "Account", "Email", "Type", "Telephone"];
 
   const modalStyle = {
     content: {
@@ -290,8 +284,8 @@ export default function DesktopLayout() {
             right: "auto",
             bottom: "auto",
             padding: "0",
-            maxWidth: "28rem",
-            maxHeight: "20vh",
+            width: "90vw",
+            height: "auto",
             marginRight: "-50%",
             transform: "translate(-50%, -50%)",
           },
@@ -311,7 +305,7 @@ export default function DesktopLayout() {
               </p>
             </div>
           </div>
-          <div className="text-center md:text-right mt-4 md:flex md:justify-end space-x-2">
+          <div className="text-center md:text-right mt-4 md:flex md:justify-end">
             <Button
               onClickEvent={() => {
                 handleDeleteUser(deleteTarget);

@@ -1,18 +1,29 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router";
-import { Bars4Icon } from "@heroicons/react/24/solid";
+import { MODE } from "../../../lib/constants/constants";
 
 export default function Sidebar() {
+  const sidebarOpen = useSelector((state) => state.sidebar.isOpen);
+  const sidebarMode = useSelector((state) => state.sidebar.mode);
+
   const navigateTo = useNavigate();
   return (
-    <aside className="flex flex-col relative w-64 min-w-[256px] h-screen px-5 py-8 overflow-y-auto bg-white border-r rtl:border-r-0 rtl:border-l dark:bg-gray-900 dark:border-gray-700">
+    <aside
+      className={`flex flex-col w-64 max-w-[256px] h-auto overflow-y-auto bg-white border-r rtl:border-r-0 rtl:border-l transition-all px-5 py-8 z-[50]  ${
+        sidebarMode === MODE.MOBILE
+          ? sidebarOpen
+            ? "absolute top-0 left-0 bottom-0 translate-x-0"
+            : "absolute top-0 left-0 bottom-0 -translate-x-full"
+          : "relative"
+      }`}>
       <a
         onClick={(e) => {
           e.preventDefault();
           navigateTo("quan-ly-nguoi-dung");
         }}>
         <img
-          className="w-auto h-7"
+          className="w-auto h-8"
           src="https://merakiui.com/images/logo.svg"
           alt=""
         />
@@ -70,6 +81,7 @@ export default function Sidebar() {
           </div>
         </nav>
       </div>
+
       {/* <Bars4Icon className="absolute top-0 -right-10 w-10 h-10 z-50"></Bars4Icon> */}
     </aside>
   );

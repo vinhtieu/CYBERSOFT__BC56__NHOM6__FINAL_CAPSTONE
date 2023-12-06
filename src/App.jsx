@@ -9,7 +9,7 @@ function App() {
   // const dispatch = useDispatch();
 
   return (
-    <div>
+    <>
       <BrowserRouter>
         <Routes>
           <Route path="/admin" element={<Layout />}>
@@ -18,7 +18,7 @@ function App() {
           </Route>
         </Routes>
       </BrowserRouter>
-    </div>
+    </>
   );
 }
 

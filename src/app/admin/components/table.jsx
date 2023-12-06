@@ -19,8 +19,10 @@ import {
   updateURL,
 } from "../../../lib/redux/slices/paginationSlice";
 import { userService } from "../../../api/service";
+import { MODE } from "../../../lib/constants/constants";
 
 export default function Table({ header, body }) {
+  const sidebarMode = useSelector((state) => state.sidebar.mode);
   const currentPage = useSelector((state) => state.pagination.page);
   const currentPageSize = useSelector((state) => state.pagination.pageSize);
   const totalItem = useSelector((state) => state.pagination.total);
@@ -50,14 +52,50 @@ export default function Table({ header, body }) {
       });
   };
 
+  const renderPagination = () => {
+    return sidebarMode === MODE.MOBILE ? (
+      <Pagination
+        simple
+        total={totalItem}
+        current={currentPage}
+        pageSize={currentPageSize}
+        showSizeChanger={false}
+        defaultPageSize={10}
+        defaultCurrent={1}
+        rootClassName="text-lg"
+        onChange={(page, pageSize) => {
+          dispatch(setPage(page));
+          dispatch(setPageSize(pageSize));
+          dispatch(updateURL());
+        }}
+      />
+    ) : (
+      <Pagination
+        total={totalItem}
+        current={currentPage}
+        pageSize={currentPageSize}
+        showSizeChanger={false}
+        defaultPageSize={10}
+        defaultCurrent={1}
+        onChange={(page, pageSize) => {
+          dispatch(setPage(page));
+          dispatch(setPageSize(pageSize));
+          dispatch(updateURL());
+        }}
+      />
+    );
+  };
+
   const renderTableHeader = (data) => {
     return data.map((title, index) => {
       return index === 0 ? (
-        <th key={index} className="p-3 text-left max-w-[250px] text-lg">
+        <th
+          key={index}
+          className="p-3 text-left min-w-[250px] text-lg leading-6">
           {title}
         </th>
       ) : (
-        <th key={index} className="p-3 pl-0 text-left max-w-[250px] text-lg">
+        <th key={index} className="p-3 pl-0 text-left min-w-[150px] text-lg">
           {title}
         </th>
       );
@@ -115,13 +153,13 @@ export default function Table({ header, body }) {
                 {user.soDT}
               </span>
             </td>
-            <td className="p-3  space-x-4 text-left min-w-[150px]">
+            <td className="p-3 space-x-4 text-left min-w-[150px]">
               <Button
                 onClickEvent={() => {
                   dispatch(openUserDeleteModal());
                   dispatch(setDeleteUser(user));
                 }}
-                className="!h-[40px] !w-[40px] !p-1.5 !mt-0 !border-0">
+                className="!h-[40px] !w-[40px] !p-1.5 !mt-0 !border-0 !inline-block">
                 <TrashIcon className="text-red-500" />
               </Button>
               <Button
@@ -130,7 +168,7 @@ export default function Table({ header, body }) {
                   handleGetUserDetailByPhoneNumber(user.soDT);
                   handleGetCourseByUser(user.taiKhoan);
                 }}
-                className="!h-[40px] !w-[40px] !p-1.5 !mt-0 !border-0 flex place-items-center">
+                className="!h-[40px] !w-[40px] !p-1.5 !mt-0 !border-0  !inline-block">
                 <PencilSquareIcon className="text-blue-500" />
               </Button>
             </td>
@@ -143,21 +181,24 @@ export default function Table({ header, body }) {
   };
 
   return (
-    <div className="relative flex flex-col break-words min-w-0 bg-clip-border rounded-[.95rem] max-w-full bg-white m-5 overflow-hidden ">
-      <div className="px-9 pt-5 flex justify-between items-stretch flex-wrap min-h-[70px] pb-0 bg-transparent">
-        <h3 className="m-2 ml-0 font-medium  ">
-          <span className="mr-3 text-3xl">User Management</span>
+    <div
+      className="relative flex flex-col break-words min-w-0 bg-clip-border
+    max-[389.98px]:px-2 max-[389.98px]:py-8
+    max-[767.98px]:px-8 max-[767.98px]:py-6
+    px-8 py-8 rounded-[.95rem] max-w-full bg-white m-5 overflow-hidden ">
+      <div
+        className={` flex flex-wrap  p-0 max-[767.98px]:mb-6 mb-2 ${
+          sidebarMode === MODE.MOBILE
+            ? "flex-col items-center gap-4"
+            : "flex-row items-center justify-between"
+        }`}>
+        <h3
+          className={` ml-0 font-medium  max-[389.98px]:text-xl text-3xl block`}>
+          User Management
         </h3>
-        <Button
-          onClickEvent={() => {
-            dispatch(openUserAddModal());
-          }}
-          className="">
-          Add User
-        </Button>
       </div>
       {/* table Container */}
-      <div className="py-8 pt-6 px-9 overflow-x-auto">
+      <div className="mb-4 overflow-x-auto">
         <table className="max-w-[100%] w-full my-0 align-middle  border-neutral-200">
           <thead className="align-bottom">
             <tr className=" text-left ">
@@ -169,21 +210,10 @@ export default function Table({ header, body }) {
         </table>
       </div>
       {/* table Container */}
-      <div className="p-5 px-9 flex justify-start">
-        <Pagination
-          total={totalItem}
-          showTotal={(total) => `Total ${total} items`}
-          current={currentPage}
-          pageSize={currentPageSize}
-          defaultPageSize={10}
-          defaultCurrent={1}
-          onChange={(page, pageSize) => {
-            dispatch(setPage(page));
-            dispatch(setPageSize(pageSize));
-            dispatch(updateURL());
-          }}
-          rootClassName="!ml-auto"
-        />
+      <div
+        className={`flex flex-row items-center  max-[939.98px]:justify-center justify-between`}>
+        <span className="text-base max-[939.98px]:hidden">{`Total ${totalItem} items`}</span>
+        {renderPagination()}
       </div>
     </div>
   );
