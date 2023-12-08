@@ -1,7 +1,34 @@
+// import { useMediaQuery } from "react-responsive";
+// import DesktopLayout from "./desktopLayout";
+// import MobileLayout from "./mobileLayout";
+
+// const Desktop = ({ children }) => {
+//   const isDesktop = useMediaQuery({ minWidth: 777 });
+//   return isDesktop ? children : null;
+// };
+
+// const Mobile = ({ children }) => {
+//   const isMobile = useMediaQuery({ maxWidth: 776.98 });
+//   return isMobile ? children : null;
+// };
+
+// export default function QuanLyNguoiDung() {
+//   return (
+//     <>
+//       <Desktop>
+//         <DesktopLayout></DesktopLayout>
+//       </Desktop>
+//       <Mobile>
+//         <DesktopLayout></DesktopLayout>
+//       </Mobile>
+//     </>
+//   );
+// }
+
 import React, { useEffect } from "react";
 import ReactModal from "react-modal";
 import { Toaster } from "react-hot-toast";
-import { Table, Button } from "../../components";
+import { Table } from "../../components";
 import { useDispatch, useSelector } from "react-redux";
 
 import {
@@ -12,6 +39,8 @@ import {
   EllipsisHorizontalIcon,
 } from "@heroicons/react/24/solid";
 import { Card, Tabs } from "antd";
+import { Button } from "../../components";
+
 import Meta from "antd/es/card/Meta";
 import {
   handleCloseModal,

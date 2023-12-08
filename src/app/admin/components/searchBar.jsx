@@ -2,6 +2,7 @@ import React from "react";
 import { useDispatch } from "react-redux";
 import { setUserTableStatus } from "../../../lib/redux/slices/statusSlice";
 import { STATUS } from "../../../lib/constants/constants";
+import { setSearchKey } from "../../../lib/redux/slices/userSlice";
 
 export default function SearchBar() {
   const dispatch = useDispatch();
