@@ -28,7 +28,7 @@
 import React, { useEffect } from "react";
 import ReactModal from "react-modal";
 import { Toaster } from "react-hot-toast";
-import { Table } from "../../components";
+import Table from "./table";
 import { useDispatch, useSelector } from "react-redux";
 
 import {

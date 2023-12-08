@@ -1,1 +1,1 @@
-export { default as QuanLyNguoiDung } from "./quanLyNguoiDung";
+export { default } from "./quanLyNguoiDung";

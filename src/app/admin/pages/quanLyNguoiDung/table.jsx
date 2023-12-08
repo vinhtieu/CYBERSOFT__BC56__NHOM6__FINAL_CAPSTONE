@@ -2,20 +2,23 @@ import React from "react";
 import {
   openUserDeleteModal,
   setDeleteUser,
-} from "../../../lib/redux/slices/userDeleteModalSlice";
+} from "../../../../lib/redux/slices/userDeleteModalSlice";
 import {
   openUserEditModal,
   setCourses,
   setInfo,
-} from "../../../lib/redux/slices/userEditModalSlice";
+} from "../../../../lib/redux/slices/userEditModalSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { TrashIcon, PencilSquareIcon } from "@heroicons/react/24/solid";
 import { Pagination } from "antd";
-import Button from "./button";
-import SearchBar from "./searchBar";
-import { setPage, updateURL } from "../../../lib/redux/slices/paginationSlice";
-import { userService } from "../../../api/service";
-import { MODE, STATUS } from "../../../lib/constants/constants";
+import Button from "../../components/button";
+import SearchBar from "../../components/searchBar";
+import {
+  setPage,
+  updateURL,
+} from "../../../../lib/redux/slices/paginationSlice";
+import { userService } from "../../../../api/service";
+import { MODE, STATUS } from "../../../../lib/constants/constants";
 
 export default function Table({ header, body }) {
   const userTableData = useSelector((state) => state.status.userTableData);
