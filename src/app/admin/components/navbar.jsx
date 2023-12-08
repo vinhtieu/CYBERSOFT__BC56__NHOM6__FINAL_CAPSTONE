@@ -1,12 +1,16 @@
 import React from "react";
 import { Bars4Icon } from "@heroicons/react/24/solid";
 import { toggleSidebar } from "../../../lib/redux/slices/sidebarSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { MODE } from "../../../lib/constants/constants";
 
 export default function Navbar() {
+  const sidebarMode = useSelector((state) => state.sidebar.mode);
   const dispatch = useDispatch();
   return (
-    <div className="max-[389.98px]:h-16 h-20 px-4 py-2 flex items-center min-[666px]:hidden">
+    <div
+      className={`max-[389.98px]:h-16 h-20 px-4 py-2
+    ${sidebarMode === MODE.MOBILE ? "flex items-center" : "hidden"}`}>
       <img
         className="w-auto max-[389.98px]:h-6 h-8 inline-block"
         src="https://merakiui.com/images/logo.svg"

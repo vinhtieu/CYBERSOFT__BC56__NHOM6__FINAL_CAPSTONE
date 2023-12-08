@@ -15,6 +15,8 @@ import {
 import { closeUserDeleteModal } from "../../../../lib/redux/slices/userDeleteModalSlice";
 import toast from "react-hot-toast";
 import store from "../../../../lib/redux/store";
+import { setUserTableDataStatus } from "../../../../lib/redux/slices/statusSlice";
+import { STATUS } from "../../../../lib/constants/constants";
 
 export const handleCloseModal = (e) => {
   store.dispatch(closeUserEditModal());
@@ -81,19 +83,21 @@ export const handleDeleteUser = (user) => {
     });
 };
 
-export const handleGetUsers = (page, pageSize) => {
-  console.count("handleGetUsers");
+export const handleGetUsers = (page, searchKey) => {
+  store.dispatch(setUserTableDataStatus(STATUS.PENDING));
+
   userService
-    .getUsers(page, pageSize)
+    .getUsers(page, searchKey)
     .then((res) => {
       store.dispatch(setPage(page));
-      store.dispatch(setPageSize(pageSize));
       store.dispatch(setTotalItem(res.data.totalCount));
       sessionStorage.setItem("userList", JSON.stringify(res.data));
       store.dispatch(setList(res.data.items));
+      store.dispatch(setUserTableDataStatus(STATUS.SUCCESS));
     })
     .catch((err) => {
       console.log(err);
+      store.dispatch(setUserTableDataStatus(STATUS.ERROR));
     });
 };
 

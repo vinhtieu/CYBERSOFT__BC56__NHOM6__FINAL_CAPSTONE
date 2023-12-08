@@ -11,9 +11,9 @@ export default function Layout() {
 
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth < 665.98 && sidebarMode === MODE.DESKTOP) {
+      if (window.innerWidth < 776.98 && sidebarMode === MODE.DESKTOP) {
         dispatch(setMode(MODE.MOBILE));
-      } else if (window.innerWidth > 666 && sidebarMode === MODE.MOBILE) {
+      } else if (window.innerWidth > 777 && sidebarMode === MODE.MOBILE) {
         dispatch(setMode(MODE.DESKTOP));
       }
     };
@@ -25,7 +25,10 @@ export default function Layout() {
   });
   return (
     <div className="relative">
-      <div className="flex max-[665.98px]:flex-col flex-row">
+      <div
+        className={`flex ${
+          sidebarMode === MODE.MOBILE ? "flex-col" : "flex-row"
+        } `}>
         <Sidebar></Sidebar>
         <Navbar></Navbar>
         <div className="flex-1 bg-[#f3f4f6] h-screen overflow-auto">

@@ -6,13 +6,12 @@ import { useDispatch, useSelector } from "react-redux";
 
 import {
   XCircleIcon,
-  ChevronDownIcon,
   ExclamationTriangleIcon,
   PencilSquareIcon,
   Cog8ToothIcon,
   EllipsisHorizontalIcon,
 } from "@heroicons/react/24/solid";
-import { Card, Dropdown, Tabs, Typography } from "antd";
+import { Card, Tabs } from "antd";
 import { Button } from "../../components";
 
 import Meta from "antd/es/card/Meta";
@@ -20,32 +19,33 @@ import {
   handleCloseModal,
   handleDeleteUser,
   handleGetUsers,
-  handleMenuClick,
   handleUserInputs,
   handleUpdateUser,
 } from "./helpers";
 import "./style.css";
+import { STATUS } from "../../../../lib/constants/constants";
 
 export default function DesktopLayout() {
+  // user
   const userList = useSelector((state) => state.user.list);
-  const searchKey = useSelector((state) => state.userEditModal.searchKey);
+  const searchKey = useSelector((state) => state.user.searchKey);
+  //status
+  const userTableStatus = useSelector((state) => state.status.userTable);
+  // edit modal
   const userInfo = useSelector((state) => state.userEditModal.info);
   const userCourses = useSelector((state) => state.userEditModal.courses);
   const editUserInfo = useSelector((state) => state.userEditModal.editedData);
-  const deleteTarget = useSelector((state) => state.userDeleteModal.deleteUser);
-  const currentPage = useSelector((state) => state.pagination.page);
-  const currentPageSize = useSelector((state) => state.pagination.pageSize);
   const editModalOpen = useSelector((state) => state.userEditModal.isOpen);
+  // delete modal
+  const deleteTarget = useSelector((state) => state.userDeleteModal.deleteUser);
   const deleteModalOpen = useSelector((state) => state.userDeleteModal.isOpen);
+  // pagination
+  const currentPage = useSelector((state) => state.pagination.page);
+  // add modal
   const addModalOpen = useSelector((state) => state.userAddModal.isOpen);
+  const dispatch = useDispatch();
 
-  const tableHeader = [
-    "Name",
-    "Account",
-    "Email",
-    "Loại Người Dùng",
-    "Telephone",
-  ];
+  const tableHeader = ["Name", "Account", "Email", "Type", "Telephone"];
 
   const modalStyle = {
     content: {
@@ -164,7 +164,7 @@ export default function DesktopLayout() {
       children: !editModalOpen ? (
         <span></span>
       ) : (
-        <div className="flex flex-row flex-wrap overflow-auto w-full h-full">
+        <div className="flex flex-row flex-wrap w-full h-full overflow-auto">
           {userCourses.length > 0 ? (
             userCourses.map((course) => {
               console.log(course);
@@ -216,20 +216,18 @@ export default function DesktopLayout() {
   ];
 
   useEffect(() => {
-    const data = JSON.parse(sessionStorage.getItem("userList"));
+    const userList = JSON.parse(sessionStorage.getItem("userList"));
     const queryParams = new URLSearchParams(window.location.search);
     const savedPage = +queryParams.get("page");
-    const savedPageSize = +queryParams.get("pageSize");
-    if (
-      data &&
-      data.currentPage === savedPage &&
-      data.count === savedPageSize
-    ) {
-      handleGetUsers(savedPage, savedPageSize);
+
+    if (userTableStatus === STATUS.SEARCHING) {
+      handleGetUsers(1, searchKey);
+    } else if (userList && userList.currentPage === savedPage) {
+      handleGetUsers(savedPage);
     } else {
-      handleGetUsers(currentPage, currentPageSize);
+      handleGetUsers(currentPage);
     }
-  }, [currentPage, currentPageSize]);
+  }, [currentPage, userTableStatus]);
 
   return (
     <>
@@ -242,12 +240,11 @@ export default function DesktopLayout() {
         className="absolute top-1/2 left-1/2 right-auto bottom-auto overflow-auto
         w-[80vw] min-[940px]:w-[50vw] min-[1200px]:w-[40vw] min-[1670px]:w-[30vw]
         h-[80vh] min-[666px]:h-[75vh] min-[940px]:h-[62vh]  -mr-1/2 -translate-y-1/2 -translate-x-1/2 bg-white rounded-[4px] p-5 border border-[#cccccc]"
-        // style={modalStyle}
         ariaHideApp={false}
         contentLabel="User Edit Modal">
         <div className="flex flex-col h-full">
           <div className="flex flex-row items-center justify-between mb-4">
-            <h2 className="inline-block font-semibold text-3xl text-gray-900">
+            <h2 className="inline-block text-3xl font-semibold text-gray-900">
               Profile
             </h2>
             <Button
@@ -261,7 +258,7 @@ export default function DesktopLayout() {
             items={tabs}
             rootClassName="flex-1 flex-col"
           />
-          <div className="flex flex-row justify-end items-center pt-6 pb-3 gap-4 m-0 mt-auto">
+          <div className="flex flex-row items-center justify-end gap-4 pt-6 pb-3 m-0 mt-auto">
             <Button onClickEvent={handleCloseModal} className="">
               Cancel
             </Button>
@@ -298,30 +295,30 @@ export default function DesktopLayout() {
         }}
         contentLabel="Example Modal"
         ariaHideApp={false}>
-        <div className="bg-white rounded-lg md:max-w-md p-4 inset-x-0">
-          <div className="md:flex items-center">
-            <div className="rounded-full border border-gray-300 flex items-center justify-center w-20 h-20 flex-shrink-0 mx-auto">
+        <div className="inset-x-0 p-4 bg-white rounded-lg md:max-w-md">
+          <div className="items-center md:flex">
+            <div className="flex items-center justify-center flex-shrink-0 w-20 h-20 mx-auto border border-gray-300 rounded-full">
               <ExclamationTriangleIcon className="w-10 h-10 text-red-500" />
             </div>
-            <div className="mt-4 md:mt-0 md:ml-6 text-center md:text-left">
-              <p className="font-bold text-lg">Delete your account</p>
-              <p className="text-base text-gray-700 mt-1">
+            <div className="mt-4 text-center md:mt-0 md:ml-6 md:text-left">
+              <p className="text-lg font-bold">Delete your account</p>
+              <p className="mt-1 text-base text-gray-700">
                 You will lose all of your data by deleting your account. This
                 action cannot be undone.
               </p>
             </div>
           </div>
-          <div className="text-center md:text-right mt-4 md:flex md:justify-end space-x-2">
+          <div className="mt-4 space-x-2 text-center md:text-right md:flex md:justify-end">
             <Button
               onClickEvent={() => {
                 handleDeleteUser(deleteTarget);
               }}
-              className="bg-white text-black">
+              className="text-black bg-white">
               Delete Account
             </Button>
             <Button
               onClickEvent={handleCloseModal}
-              className="bg-black text-white">
+              className="text-white bg-black">
               Cancel
             </Button>
           </div>
@@ -331,13 +328,12 @@ export default function DesktopLayout() {
       {/* Add Modal */}
       <ReactModal
         isOpen={addModalOpen}
-        // onAfterOpen={afterOpenModal}
         onRequestClose={handleCloseModal}
         style={modalStyle}
         contentLabel="Example Modal"
         ariaHideApp={false}>
         <div className="flex flex-row items-center justify-between mb-4">
-          <h2 className="inline-block font-semibold text-3xl text-gray-900">
+          <h2 className="inline-block text-3xl font-semibold text-gray-900">
             New User
           </h2>
           <Button
@@ -348,8 +344,7 @@ export default function DesktopLayout() {
         </div>
         <form>
           <div>
-            <div className="mt-6  ">
-              {/* <dl className="divide-y divide-gray-100"> */}
+            <div className="mt-6 ">
               <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                 <dt className="text-base font-medium leading-6 text-gray-900">
                   Full name
@@ -399,11 +394,10 @@ export default function DesktopLayout() {
                 />
               </div>
 
-              {/* </dl> */}
             </div>
-            <div className="flex flex-row justify-end items-center pt-6 pb-3 gap-4 m-0">
+            <div className="flex flex-row items-center justify-end gap-4 pt-6 pb-3 m-0">
               <Button
-                // onClickEvent={handleCloseModal}
+                onClickEvent={handleCloseModal}
                 className="">
                 Cancel
               </Button>

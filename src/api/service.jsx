@@ -1,11 +1,13 @@
 import HTTPS from "./config";
 
 export const userService = {
-  getUsers: (key = "", currentPage = 1, pageSize = 10) => {
+  getUsers: (currentPage = 1, key = "") => {
+    console.log("key: ", key);
+    console.log("currentPage: ", currentPage);
     return HTTPS.get(
       `/api/QuanLyNguoiDung/LayDanhSachNguoiDung_PhanTrang?MaNhom=GP01${
-        typeof key === "string" ? "&tuKhoa=" + key : ""
-      }&page=${currentPage}&pageSize=${pageSize}`
+        typeof key === "string" && key.length > 0 ? "&tuKhoa=" + key : ""
+      }&page=${currentPage}&pageSize=10`
     );
   },
   addUser: (value) => {

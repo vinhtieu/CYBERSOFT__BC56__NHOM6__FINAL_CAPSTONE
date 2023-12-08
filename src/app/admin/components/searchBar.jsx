@@ -1,20 +1,13 @@
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { userService } from "../../../api/service";
-import { setList, setSearchKey } from "../../../lib/redux/slices/userSlice";
-import store from "../../../lib/redux/store";
-import {
-  setPage,
-  setPageSize,
-  setTotalItem,
-} from "../../../lib/redux/slices/paginationSlice";
+import { useDispatch } from "react-redux";
+import { setUserTableStatus } from "../../../lib/redux/slices/statusSlice";
+import { STATUS } from "../../../lib/constants/constants";
 
-export default function Search() {
-  const searchKeyword = useSelector((state) => state.user.searchKey);
+export default function SearchBar() {
   const dispatch = useDispatch();
   return (
     <div
-      className="flex items-center max-w-md  bg-white rounded-lg border border-[#cccccc]"
+      className={`flex items-center :mb-1 w-[95%] min-[777px]:w-[80%] min-[1100px]:mb-0 min-[1100px]:max-w-[350px] bg-white rounded-lg border border-[#cccccc]`}
       x-data="{ search: '' }">
       <div className="w-full">
         <input
@@ -23,24 +16,19 @@ export default function Search() {
           placeholder="search"
           x-model="search"
           onChange={(e) => {
-            dispatch(setSearchKey(e.target.value));
+            const key = e.target.value;
+            if (key) {
+              dispatch(setSearchKey(key));
+            } else {
+              dispatch(setUserTableStatus(STATUS.STAND_BY));
+            }
           }}
         />
       </div>
       <div>
         <button
           onClick={() => {
-            userService
-              .getUsers(searchKeyword)
-              .then((res) => {
-                store.dispatch(setPage(res.data.currenPage));
-                store.dispatch(setPageSize(res.data.count));
-                store.dispatch(setTotalItem(res.data.totalCount));
-                store.dispatch(setList(res.data.items));
-              })
-              .catch((err) => {
-                console.log(err);
-              });
+            dispatch(setUserTableStatus(STATUS.SEARCHING));
           }}
           type="submit"
           className="flex items-center  justify-center w-12 h-12 text-[#cccccc] rounded-r-lg">

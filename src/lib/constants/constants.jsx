@@ -2,3 +2,11 @@ export const MODE = {
   DESKTOP: "DESKTOP",
   MOBILE: "MOBILE",
 };
+
+export const STATUS = {
+  STAND_BY: "STAND_BY",
+  SEARCHING: "SEARCHING",
+  PENDING: "PENDING",
+  SUCCESS: "SUCCESS",
+  ERROR: "ERROR",
+};

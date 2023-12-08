@@ -6,6 +6,7 @@ import {
   userAddModalSlice,
   paginationSlice,
   sidebarSlice,
+  statusSlice,
 } from "./slices";
 
 const store = configureStore({
@@ -16,6 +17,7 @@ const store = configureStore({
     userAddModal: userAddModalSlice,
     pagination: paginationSlice,
     sidebar: sidebarSlice,
+    status: statusSlice,
   },
 });
 
