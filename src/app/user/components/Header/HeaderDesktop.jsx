@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import logoHeader from '../../../../../public/assets/header.png'
 
 
@@ -50,9 +50,9 @@ function Header() {
         {/* Dropdown */}
         {isCoursesOpen && (
         <div className="absolute bg-gray-800 text-white py-2 mt-2 z-10">
-        <div onClick={closeMenus} className="block px-4 py-2 hover:bg-gray-700 cursor-pointer">
+        <NavLink to='/' onClick={closeMenus} className="block px-4 py-2 hover:bg-gray-700 cursor-pointer">
           Home 1
-        </div>
+        </NavLink>
         <div onClick={closeMenus} className="block px-4 py-2 hover:bg-gray-700 cursor-pointer">
           Home 2
         </div>
@@ -74,10 +74,10 @@ function Header() {
         <div className="cursor-pointer hover:text-gray-300 mx-4">Courses</div>
               {/* Dropdown */}
               {isHomeOpen && (
-                <div className="absolute bg-gray-800 text-white py-2 mt-2 z-10">
-                  <div onClick={closeMenus} className="block px-4 py-2 hover:bg-gray-700 cursor-pointer">
+                <div className="absolute bg-gray-800 text-white py-2 mt-2 z-10 p-10">
+                  <NavLink to="/danhmuc" onClick={closeMenus} className="block px-4 py-2 hover:bg-gray-700 cursor-pointer">
                     Courses List
-                  </div>
+                  </NavLink>
                   <div onClick={closeMenus} className="block px-4 py-2 hover:bg-gray-700 cursor-pointer">
                     Courses Single
                   </div>
@@ -90,7 +90,6 @@ function Header() {
                 </div>
               )}
             </div>
-            <div className="hover:text-gray-300  mr-5">About</div>
             <div className='ml-4'>
                 <button onClick={()=> {
                 navigate("/login");

@@ -1,4 +1,5 @@
-import { createSlice } from "@reduxjs/toolkit";
+import {createSlice } from "@reduxjs/toolkit";
+
 const data = sessionStorage.getItem("userList")
 const initialState = {
    list: JSON.parse(data) || [],
@@ -11,7 +12,7 @@ const courseSlice = createSlice({
         setList: (state, action) => {
             state.list = action.payload; 
         }
-    }
+    },
 })
 
 export default courseSlice.reducer;

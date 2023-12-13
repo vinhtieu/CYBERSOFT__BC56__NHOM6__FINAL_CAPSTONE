@@ -58,6 +58,7 @@ export default function ListCourses() {
               color:'black',
               backgroundColor:'red'
             }}
+            to="/detail"
             >
               View Course
             </NavLink>
@@ -70,7 +71,7 @@ export default function ListCourses() {
     )
   }
   return (
-    <div className='pt-20'>
+    <div className='pt-10 bg-red-50 pb-8'>
       {renderList()}
       <div className="flex justify-center space-x-2 mt-4">
         {Array.from({ length: Math.ceil(courseList.length / coursesPerPage) }, (_, i) => i + 1).map(
@@ -87,7 +88,7 @@ export default function ListCourses() {
           )
         )}
       </div>
-      <Link to="/all-courses">
+      <Link to="/">
         <button className="block mx-auto mt-4 bg-red-400 hover:bg-red-500 text-white font-bold py-2 px-4 rounded">
           View All Courses
         </button>
