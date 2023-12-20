@@ -1,6 +1,13 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import logoHeader from '../../../../../public/assets/header.png'
+import { useForm } from 'react-hook-form';
+import styled from 'styled-components';
+import { useDispatch } from 'react-redux';
+import {updateSearchTerm} from '../../../../lib/redux/slices/SearchSlice'
+import { courses } from '../../../../api/service';
+
+
 
 
 function Header() {
@@ -12,27 +19,11 @@ function Header() {
     window.location.href = "/";
     localStorage.clear(); // xóa toàn bộ localStorage
   }
-  
-  const [isCoursesOpen, setIsCoursesOpen] = useState(false);
-  const [isHomeOpen, setIsHomeOpen] = useState(false);
-
-  const handleCoursesClick = () => {
-    setIsCoursesOpen(!isCoursesOpen);
-  };
-
-  const handleHomeClick = () => {
-    setIsHomeOpen(!isHomeOpen);
-  };
-
-  const closeMenus = () => {
-    setIsCoursesOpen(false);
-    setIsHomeOpen(false);
-  };
   let renderNav = () => {
     // if (info) {
     //   return (
     //     <div className='mr-20'>
-    //       <span className='mr-10 text-red-500 font-semibold'></span>
+    //       <NavLink to="/profile" className='mr-10 text-red-500 font-semibold'>{info.hoten}</NavLink>
     //       <button onClick={handleLogout} type="submit" className="bg-blue-400 hover:bg-blue-70"></button>
     //     </div>
     //   )
@@ -40,65 +31,21 @@ function Header() {
 
     return (
       <div className="flex space-x-4">
-        <div 
-          className="relative mr-5"
-            onMouseEnter={handleCoursesClick}
-            onMouseLeave={closeMenus}
-            onClick={handleCoursesClick}
-            >
-        <div className="cursor-pointer hover:text-gray-300">Home</div>
-        {/* Dropdown */}
-        {isCoursesOpen && (
-        <div className="absolute bg-gray-800 text-white py-2 mt-2 z-10">
-        <NavLink to='/' onClick={closeMenus} className="block px-4 py-2 hover:bg-gray-700 cursor-pointer">
-          Home 1
-        </NavLink>
-        <div onClick={closeMenus} className="block px-4 py-2 hover:bg-gray-700 cursor-pointer">
-          Home 2
+        <div className='mt-1'>
+          <NavLink to='/' className="cursor-pointer hover:text-gray-300 font-bold">Home</NavLink>
         </div>
-        <div onClick={closeMenus} className="block px-4 py-2 hover:bg-gray-700 cursor-pointer">
-          Home 3
+        <div className='mt-1'>
+          <NavLink to="/danhmuc" className="cursor-pointer hover:text-gray-300 mx-4 font-bold">Category</NavLink>
         </div>
-        <div onClick={closeMenus} className="block px-4 py-2 hover:bg-gray-700 cursor-pointer">
-          Home 4
-          </div>
-          </div>
-            )}
-          </div>
-          <div
-          className="relative  mr-5 "
-            onMouseEnter={handleHomeClick}
-            onMouseLeave={closeMenus}
-            onClick={handleHomeClick}
-            >
-        <div className="cursor-pointer hover:text-gray-300 mx-4">Courses</div>
-              {/* Dropdown */}
-              {isHomeOpen && (
-                <div className="absolute bg-gray-800 text-white py-2 mt-2 z-10 p-10">
-                  <NavLink to="/danhmuc" onClick={closeMenus} className="block px-4 py-2 hover:bg-gray-700 cursor-pointer">
-                    Courses List
-                  </NavLink>
-                  <div onClick={closeMenus} className="block px-4 py-2 hover:bg-gray-700 cursor-pointer">
-                    Courses Single
-                  </div>
-                  <div onClick={closeMenus} className="block px-4 py-2 hover:bg-gray-700 cursor-pointer">
-                    Intructors
-                  </div>
-                  <div onClick={closeMenus} className="block px-4 py-2 hover:bg-gray-700 cursor-pointer">
-                    Intructor Single
-                  </div>
-                </div>
-              )}
-            </div>
             <div className='ml-4'>
                 <button onClick={()=> {
                 navigate("/login");
-                }} className="hover:text-gray-300 border border-gray px-3 py-1 rounded-md bg-gray-400 mr-4">
+                }} className="hover:text-gray-300 border border-gray px-3 py-1 rounded-md bg-gray-400 mr-4 font-semibold">
               Login
               </button>
               <button onClick={() => {
               navigate("/register");
-          }} className="hover:text-gray-300 border border-gray px-3 py-1 rounded-md bg-gray-400">
+          }} className="hover:text-gray-300 border border-gray px-3 py-1 rounded-md bg-gray-400 font-semibold">
               Register
           </button>
         </div>
@@ -106,8 +53,40 @@ function Header() {
       </div>
     )
   }
+  const [ scrollY, setScrollY] = useState(0);
+  const handleScrollY = () => {
+    const scrollY = window.scrollY || document.documentElement.scrollTop;
+    setScrollY(scrollY)
+  }
+  useEffect (() =>{
+    handleScrollY();
+    window.addEventListener("scroll", handleScrollY);
+    return() => {
+      window.removeEventListener('scroll', handleScrollY);
+    }
+  }, [])
+  const Navigation = styled.div`
+  position : fixed;
+  width: 100%;
+  height: 80px;
+  transition: all .5s;
+`
+const dispatch = useDispatch();
+const inputRef = useRef(null);
+
+const handleSubmit = async (event) => {
+  event.preventDefault();
+   navigate({ pathname: '/search' });
+}
+
+const handleInputChange = (event) => {
+  const searchTerm = event.target.value;
+  dispatch(updateSearchTerm(searchTerm))
+}
+
+
   return (
-    <header className="bg-white text-black py-4 h-24">
+    <Navigation className="bg-white text-black py-4 h-24 z-20" style={scrollY < 50 ? {backgroundColor: '#fff'} : {backgroundColor: 'rgba(1, 1, 1, 0.6)'}}>
       <div className="container mx-auto flex justify-between items-center">
         <div className='flex items-center'>
           <img src={logoHeader} alt="Logo" className='h-10 mr-3'/>
@@ -115,22 +94,46 @@ function Header() {
             onClick={() => {
               navigate("/")
             }}
-            className="text-2xl font-bold cursor-pointer">UDEMY</div>
+            className="text-2xl font-bold cursor-pointer hover:text-gray-300">UDEMY</div>
         </div>
         <div>
+        <form
+          onSubmit={handleSubmit}
+          className="relative mx-auto text-gray-600 lg:block hidden flex-1"
+        >
           <input
-            type="text"
-            placeholder="Tìm kiếm..."
-            className="px-3 py-1 border rounded-md focus:outline-none focus:ring focus:border-black"
+          ref={inputRef}
+            className="border-2 w-[500px] border-gray-300 bg-white h-10 pl-2 pr-8 rounded-lg text-sm focus:outline-none"
+            type="search"
+            placeholder="search.... "
+            onChange ={handleInputChange}
           />
-          <button className='bg-gray-500 hover:bg-gray-700 text-white font-bold py-1 px-4 rounded ml-2'> Search</button>
+          <button type="submit" className="absolute right-0 top-0 mt-3 mr-5">
+            <svg
+              className="text-gray-600 h-4 w-4 fill-current"
+              xmlns="http://www.w3.org/2000/svg"
+              version="1.1"
+              id="Capa_1"
+              x="0px"
+              y="0px"
+              viewBox="0 0 56.966 56.966"
+              style={{ enableBackground: "new 0 0 56.966 56.966" }}
+              xmlSpace="preserve"
+              width="512px"
+              height="512px"
+            >
+              <path d="M55.146,51.887L41.588,37.786c3.486-4.144,5.396-9.358,5.396-14.786c0-12.682-10.318-23-23-23s-23,10.318-23,23  s10.318,23,23,23c4.761,0,9.298-1.436,13.177-4.162l13.661,14.208c0.571,0.593,1.339,0.92,2.162,0.92  c0.779,0,1.518-0.297,2.079-0.837C56.255,54.982,56.293,53.08,55.146,51.887z M23.984,6c9.374,0,17,7.626,17,17s-7.626,17-17,17  s-17-7.626-17-17S14.61,6,23.984,6z" />
+            </svg>
+          </button>
+        </form>
         </div>
-        <nav className='p-x-5'>
+        <nav className='space-x-5'>
             {renderNav()}
         </nav>
       </div>
-    </header>
+    </Navigation>
   );
 }
 
 export default Header;
+  

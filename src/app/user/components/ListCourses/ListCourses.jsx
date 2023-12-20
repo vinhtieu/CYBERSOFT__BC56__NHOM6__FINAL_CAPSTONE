@@ -8,6 +8,7 @@ export default function ListCourses() {
 
   const [currentPage, setCurrentPage] = useState(1);
   const [coursesPerPage] = useState(8); // Số lượng khóa học trên mỗi trang
+  const [maKhoaHoc, setMaKhoaHoc] = useState();
 
 
   const dispatch = useDispatch();
@@ -44,21 +45,20 @@ export default function ListCourses() {
   let renderList = () => {
     return (
       <div className='container'>
-        <h1 className='text-4xl font-semibold mb-10'>Courses</h1>
+        <h1 className='text-4xl font-semibold mb-10 shadow-lg text-center'>Courses</h1>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {currentCourses.map((course) => (
-        <div key={course.maKhoaHoc} className="bg-white rounded-lg overflow-hidden shadow-md transition duration-300 ease-in-out transform hover:scale-105">
-          <img src={course.hinhAnh} alt={course.tenKhoaHoc} className="w-full h-48 object-cover" />
+        <div key={course.maKhoaHoc} className="bg-white rounded-lg overflow-hidden shadow-lg transition duration-300 ease-in-out transform hover:scale-105 m-2 p-2">
+          <img src={course?.hinhAnh} alt={course.tenKhoaHoc} className="w-full h-48 object-cover" />
           <div className="p-4">
             <h3 className="text-lg font-semibold mb-2">{course.tenKhoaHoc}</h3>
             <NavLink className="h-10 w-ful rounded block leading-10
             text-center mt-2 bg-red-600 text-white"
-            // to={`detail/${maKhoaHoc}`}
+            to={`detail/${course?.maKhoaHoc}`}
             style ={{
               color:'black',
               backgroundColor:'red'
             }}
-            to="/detail"
             >
               View Course
             </NavLink>
@@ -88,7 +88,7 @@ export default function ListCourses() {
           )
         )}
       </div>
-      <Link to="/">
+      <Link to="/danhmuc">
         <button className="block mx-auto mt-4 bg-red-400 hover:bg-red-500 text-white font-bold py-2 px-4 rounded">
           View All Courses
         </button>

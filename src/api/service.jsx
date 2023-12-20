@@ -11,7 +11,25 @@ export let courses ={
     getkhoaHocTheoDanhMuc: (params) => {
         return HTTPS.get(`/api/QuanLyKhoaHoc/LayKhoaHocTheoDanhMuc?maDanhMuc=${params}&MaNhom=GP01`)
     },
-    getDetail:() => {
-    return HTTPS.get(`/api/QuanLyKhoaHoc/LayThongTinKhoaHoc?maKhoaHoc=${maKhoaHoc}`)
+    getDetail:(params) => {
+    return HTTPS.get(`/api/QuanLyKhoaHoc/LayThongTinKhoaHoc?maKhoaHoc=${params}`)
     },
+    getProfile: () => {
+        return HTTPS.post(`/api/QuanLyNguoiDung/ThongTinTaiKhoan`)
+    },
+    dangKyKhoaHoc: (data) => {
+    return HTTPS.post(`/api/QuanLyKhoaHoc/DangKyKhoaHoc`, data);
+  },
+  searchCourse: (searchTerm) => {
+    return HTTPS.get(
+        `/api/QuanLyKhoaHoc/LayDanhSachKhoaHoc?tenKhoaHoc=${searchTerm}`
+    )
+
+  },
+  huyGhiDanh: (data) => {
+    return HTTPS.post("/api/QuanLyKhoaHoc/HuyGhiDanh", data);
+  },
+
+
+
 }
