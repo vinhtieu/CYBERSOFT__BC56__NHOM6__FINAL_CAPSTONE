@@ -25,7 +25,7 @@ export default function ListKhoaHoc() {
 
   return (
     <div className='bg-red-50 pt-10 mt-20'>
-      <div className='container'>
+      <div className='container mx-auto'>
         <div className=''>
           <h1 className='font-bold text-xl text-center shadow-lg py-2'>CATEGORY</h1>
         </div>
