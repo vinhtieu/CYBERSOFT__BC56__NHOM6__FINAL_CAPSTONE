@@ -1,6 +1,7 @@
 import React from 'react'
 
  function Intro() {
+
     return (
         <div className='h-full bg-gray-100 flex justify-center items-center'>
           <div className='max-w-screen-lg w-full p-6'>
@@ -32,7 +33,6 @@ import React from 'react'
           </div>
         </div>
       )
-      
       
       
 }

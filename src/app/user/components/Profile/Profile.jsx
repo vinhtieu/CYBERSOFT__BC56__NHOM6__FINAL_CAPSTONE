@@ -3,7 +3,9 @@ import { useSelector } from 'react-redux';
 import { Card } from 'antd';
 import { courses } from '../../../../api/service';
 import { NavLink } from 'react-router-dom';
+
 import { PhotoIcon, UserCircleIcon } from '@heroicons/react/24/solid'
+
 
 export default function Profile() {
      let UserProfile = useSelector((state) => state.user.userProfile);
@@ -25,10 +27,12 @@ export default function Profile() {
      }
 
     return (
+
       <div className='bg-red-50'>
                   <div className="ThongTinCaNhan container py-20">
       {/* <p className="text-xl mb-10 font-bold">Profile</p> */}
       {/* <div className="text-lg font-semibold border-b pb-3 flex">
+
         <div>
           <img
             src="https://st.quantrimang.com/photos/image/2017/04/08/anh-dai-dien-FB-200.jpg"
@@ -57,6 +61,7 @@ export default function Profile() {
             <span className="text-amber-500"></span>
           </p>
         </div>
+
       </div> */}
      
       <form>
@@ -200,6 +205,7 @@ export default function Profile() {
       <div>
         <span className=" font-semibold text-amber-500 text-[40px] my-5 mt-2">
           Course you have register for
+
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {UserProfile.chiTietKhoaHocGhiDanh.map((item,index) => { 
             return <Card
@@ -225,7 +231,9 @@ export default function Profile() {
         </span>
       </div>
     </div>
+
       </div>
+
 
     )
 }

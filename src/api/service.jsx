@@ -30,6 +30,14 @@ export let courses ={
     return HTTPS.post("/api/QuanLyKhoaHoc/HuyGhiDanh", data);
   },
 
+}
 
+export const userServices = {
+  requestLogin:(value) => {
+      return HTTPS.post('/api/QuanLyNguoiDung/DangNhap',value);
+  },
+  requestRegister:(value) => {
+      return HTTPS.post('/api/QuanLyNguoiDung/DangKy',value);
+  }
 
 }

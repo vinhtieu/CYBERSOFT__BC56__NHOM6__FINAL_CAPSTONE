@@ -2,6 +2,7 @@ import React from 'react';
 
 export default function Review() {
   return (
+
     <div className='md:h-auto'>
   <div className='w-11/12 mx-auto'>
     <div className='mt-4 text-2xl font-bold text-center md:text-left'>
@@ -62,6 +63,7 @@ export default function Review() {
     </div>
   </div>
 </div>
+
 
   );
 }

@@ -2,6 +2,7 @@ import React from 'react';
 
 const FooterDesktop = () => {
   return (
+
     <footer class="bg-gray-800 text-white py-8 mt-8">
   <div class="container mx-auto">
     <div class="grid grid-cols-1 sm:grid-cols-2 ml-2 lg:grid-cols-4 gap-8">
@@ -46,6 +47,7 @@ const FooterDesktop = () => {
     </div>
   </div>
 </footer>
+
   );
 };
 
