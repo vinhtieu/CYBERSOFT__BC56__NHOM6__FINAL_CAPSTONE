@@ -20,6 +20,10 @@ export default function Footer() {
     <Desktop>
        <FooterDesktop/>
     </Desktop>
+
+    <Tablet><FooterDesktop/></Tablet>
+    <Mobile><FooterDesktop/></Mobile>
+
     </div>
   )
 }

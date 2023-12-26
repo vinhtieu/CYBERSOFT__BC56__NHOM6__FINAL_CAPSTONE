@@ -1,8 +1,10 @@
 import React from 'react'
 import { useMediaQuery } from 'react-responsive';
 import HeaderDesktop from './HeaderDesktop';
+
 import HeaderTablet from './HeaderTablet';
 import HeaderMobile from './HeaderMobile';
+
 
 const Desktop = ({ children }) => {
     const isDesktop = useMediaQuery({ minWidth: 992 });
@@ -24,10 +26,12 @@ export default function Header() {
         <HeaderDesktop/>
       </Desktop>
       <Tablet>
-        <HeaderTablet/>
+
+        <HeaderDesktop/>
       </Tablet>
       <Mobile>
-        <HeaderMobile/>
+        <HeaderDesktop/>
+
       </Mobile>
     </div>
   )

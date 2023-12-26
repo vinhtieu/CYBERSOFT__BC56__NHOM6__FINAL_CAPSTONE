@@ -29,6 +29,7 @@ export let courses ={
   huyGhiDanh: (data) => {
     return HTTPS.post("/api/QuanLyKhoaHoc/HuyGhiDanh", data);
   },
+
 }
 
 export const userServices = {
@@ -38,4 +39,5 @@ export const userServices = {
   requestRegister:(value) => {
       return HTTPS.post('/api/QuanLyNguoiDung/DangKy',value);
   }
+
 }

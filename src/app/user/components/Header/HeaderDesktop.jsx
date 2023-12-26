@@ -24,20 +24,26 @@ function Header() {
     //   return (
     //     <div className='mr-20'>
     //       <NavLink to="/profile" className='mr-10 text-red-500 font-semibold'>{info.hoten}</NavLink>
-    //       <button onClick={handleLogout} type="submit" className="bg-blue-400 hover:bg-blue-70"></button>
+
+    //       <button onClick={handleLogout} type="submit" className="bg-blue-400 hover:bg-blue-70">Logout</button>
+
     //     </div>
     //   )
     // }
 
     return (
-      <div className="flex space-x-4">
+
+      <div className="flex space-x-4 sm:grid-cols-2">
+
         <div className='mt-1'>
           <NavLink to='/' className="cursor-pointer hover:text-gray-300 font-bold">Home</NavLink>
         </div>
         <div className='mt-1'>
           <NavLink to="/danhmuc" className="cursor-pointer hover:text-gray-300 mx-4 font-bold">Category</NavLink>
         </div>
-            <div className='ml-4'>
+
+            <div className='ml-4 sm:grid-cols-1'>
+
                 <button onClick={()=> {
                 navigate("/login");
                 }} className="hover:text-gray-300 border border-gray px-3 py-1 rounded-md bg-gray-400 mr-4 font-semibold">
@@ -69,7 +75,9 @@ function Header() {
   position : fixed;
   width: 100%;
   height: 80px;
-  transition: all .5s;
+
+  transition: all 0.5s;
+
 `
 const dispatch = useDispatch();
 const inputRef = useRef(null);
@@ -84,9 +92,9 @@ const handleInputChange = (event) => {
   dispatch(updateSearchTerm(searchTerm))
 }
 
-
   return (
-    <Navigation className="bg-white text-black py-4 h-24 z-20" style={scrollY < 50 ? {backgroundColor: '#fff'} : {backgroundColor: 'rgba(1, 1, 1, 0.6)'}}>
+    <Navigation className="bg-white text-black py-4 h-24 z-20 shadow-md" style={scrollY < 50 ? {backgroundColor: '#fff'} : {backgroundColor: 'rgba(1, 1, 1, 0.6)'}}>
+
       <div className="container mx-auto flex justify-between items-center">
         <div className='flex items-center'>
           <img src={logoHeader} alt="Logo" className='h-10 mr-3'/>
@@ -99,11 +107,13 @@ const handleInputChange = (event) => {
         <div>
         <form
           onSubmit={handleSubmit}
-          className="relative mx-auto text-gray-600 lg:block hidden flex-1"
+
+          className="relative mx-auto text-gray-600 lg:block sm:block hidden flex-1 lg:w-auto"
         >
           <input
           ref={inputRef}
-            className="border-2 w-[500px] border-gray-300 bg-white h-10 pl-2 pr-8 rounded-lg text-sm focus:outline-none"
+            className="border-2  border-gray-300 bg-white h-10 pl-2 pr-8 rounded-lg text-sm focus:outline-none w-full lg:w-64"
+
             type="search"
             placeholder="search.... "
             onChange ={handleInputChange}
@@ -127,7 +137,9 @@ const handleInputChange = (event) => {
           </button>
         </form>
         </div>
-        <nav className='space-x-5'>
+
+        <nav className='space-x-5 lg:space-x-8'>
+
             {renderNav()}
         </nav>
       </div>
