@@ -1,33 +1,36 @@
-import React from "react";
-
+import React from "react"; 
+import {BrowserRouter, Route, Routes} from 'react-router-dom';
 import "./App.css";
-import { increment, decrement } from "./lib/redux/slices/counterSlice";
-import { useDispatch, useSelector } from "react-redux";
+import HomePage from "./app/user/pages";
+import Layout from "./app/user/layout/layout";
+import DanhMuc from "./app/user/components/ListDanhMuc/DanhMuc";
+import DetailPage from "./app/user/components/DetailPage/DetailPage";
+import Profile from "./app/user/components/Profile/Profile";
+import Search from "./app/user/components/Search/Search";
+import { Toaster } from "react-hot-toast";
+import LoginPage from "./app/user/pages/Login/loginPage";
+import RegisterPage from "./app/user/pages/Register/registerPage";
 
 function App() {
-  const num = useSelector((state) => state.counter.count);
-  const dispatch = useDispatch();
 
   return (
-    <div className="h-screen w-screen flex flex-col place-items-center items-center justify-center">
-      <span className="text-4xl mb-16">{num}</span>
-      <div className="space-x-8">
-        <button
-          onClick={() => {
-            dispatch(increment());
-          }}
-          className="px-6 py-4 rounded-md border border-white bg-black text-white text-3xl">
-          +
-        </button>
-        <button
-          onClick={() => {
-            dispatch(decrement());
-          }}
-          className="px-6 py-4 rounded-md border border-white bg-black text-white text-3xl">
-          -
-        </button>
-      </div>
-    </div>
+    <BrowserRouter>
+    <Toaster/>
+      <Routes>
+        <Route path="/" element={<Layout/>}>
+            <Route path="/" element={<HomePage />}/> 
+            <Route path="/danhmuc" element={<DanhMuc/>}/>
+            <Route path="/detail/:id" element={<DetailPage/>}/>
+            <Route path="/profile/detail/:id" element={<DetailPage/>}/>
+            <Route path="/danhmuc/detail/:id" element={<DetailPage/>}/>
+            <Route path="/search/detail/:id" element={<DetailPage/>}/>
+            <Route path="/profile" element={<Profile/>}/>
+            <Route path="/search" element={<Search/>}/>
+        </Route>
+            <Route path="/login" element={<LoginPage/>}/>
+            <Route path="/register" element={<RegisterPage/>}/>
+      </Routes>
+    </BrowserRouter>
   );
 }
 
